@@ -43,6 +43,14 @@ class RegisterController extends Controller
 
         $this->logAudit($user, 'user_registered');
 
+        // Send welcome email (queued — non-blocking)
+        try {
+            \Illuminate\Support\Facades\Mail::to($user->email)
+                ->queue(new \App\Mail\WelcomeEmail($user));
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::warning('Welcome email failed: ' . $e->getMessage());
+        }
+
         return redirect()->route('dashboard')
             ->with('success', 'Welcome to Amazon Listing Builder! Your account is ready.');
     }

@@ -117,30 +117,15 @@ $plans = \App\Models\Plan::where('is_active', true)->orderBy('sort_order')->get(
                     Default Plan
                 </div>
                 @else
-                <form method="POST" action="{{ route('billing.subscribe', $plan->id) }}">
-                    @csrf
-                    <input type="hidden" name="billing_cycle" id="cycle-{{ $plan->id }}" value="monthly">
-                    <button type="submit" style="
-                        width:100%;
-                        background:{{ $isFeatured ? 'linear-gradient(135deg,#E31837,#b01028)' : 'white' }};
-                        color:{{ $isFeatured ? 'white' : '#E31837' }};
-                        border:{{ $isFeatured ? 'none' : '2px solid #E31837' }};
-                        padding:13px;
-                        border-radius:10px;
-                        font-size:14px;
-                        font-weight:700;
-                        font-family:'Sora',sans-serif;
-                        cursor:pointer;
-                        transition:all 0.15s;
-                    " onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
-                        Get {{ $plan->name }}
-                        @if($currentPlan && $plan->price_monthly > ($currentPlan->price_monthly ?? 0))
-                        — Upgrade
-                        @elseif($currentPlan && $plan->price_monthly < ($currentPlan->price_monthly ?? 0))
-                        — Downgrade
-                        @endif
-                    </button>
-                </form>
+                <a href="{{ route('billing.checkout', $plan->id) }}?billing_cycle={{ request('cycle','monthly') }}"
+                   id="cta-{{ $plan->id }}"
+                   style="display:block;text-align:center;background:{{ $isFeatured ? 'linear-gradient(135deg,#E31837,#b01028)' : 'white' }};color:{{ $isFeatured ? 'white' : '#E31837' }};border:{{ $isFeatured ? 'none' : '2px solid #E31837' }};padding:13px;border-radius:10px;font-size:14px;font-weight:700;font-family:'Sora',sans-serif;text-decoration:none;transition:all 0.15s;"
+                   onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                   Get {{ $plan->name }}
+                   @if($currentPlan && $plan->price_monthly > ($currentPlan->price_monthly ?? 0)) — Upgrade
+                   @elseif($currentPlan && $plan->price_monthly < ($currentPlan->price_monthly ?? 0)) — Downgrade
+                   @endif
+                </a>
                 @endif
             </div>
         </div>
@@ -184,7 +169,13 @@ function setBilling(mode) {
     document.querySelectorAll('[id^="price-monthly-"]').forEach(el => el.style.display = mode === 'monthly' ? 'flex' : 'none');
     document.querySelectorAll('[id^="price-yearly-"]').forEach(el => el.style.display = mode === 'yearly' ? 'flex' : 'none');
     document.querySelectorAll('[id^="yearly-note-"]').forEach(el => el.style.display = mode === 'yearly' ? 'block' : 'none');
-    document.querySelectorAll('[id^="cycle-"]').forEach(el => el.value = mode);
+    // Update checkout link billing_cycle param
+    document.querySelectorAll('[id^="cta-"]').forEach(el => {
+        if (!el.href) return;
+        var u = new URL(el.href, window.location.origin);
+        u.searchParams.set('billing_cycle', mode);
+        el.href = u.toString();
+    });
 }
 </script>
 @endpush

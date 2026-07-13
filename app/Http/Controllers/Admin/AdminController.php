@@ -234,4 +234,95 @@ class AdminController extends Controller
 
         return view('admin.analytics', compact('apiLogs', 'topUsers', 'revenueByMonth'));
     }
+
+    public function apiLogs(Request $request)
+    {
+        $query = ApiLog::with('user')->latest();
+        if ($request->service) $query->where('service', $request->service);
+        if ($request->success !== null) $query->where('success', $request->success === '1');
+        $logs = $query->paginate(30)->withQueryString();
+        $services = ApiLog::distinct()->pluck('service');
+        return view('admin.logs.api', compact('logs', 'services'));
+    }
+
+    public function auditLogs(Request $request)
+    {
+        $query = \App\Models\AuditLog::with('user')->latest();
+        if ($request->user_id) $query->where('user_id', $request->user_id);
+        if ($request->action)  $query->where('action', 'like', '%'.$request->action.'%');
+        $logs = $query->paginate(30)->withQueryString();
+        return view('admin.logs.audit', compact('logs'));
+    }
+
+    public function payments(Request $request)
+    {
+        $query = Payment::with(['user', 'plan'])->latest();
+        if ($request->status)  $query->where('status', $request->status);
+        if ($request->gateway) $query->where('gateway', $request->gateway);
+        $payments = $query->paginate(25)->withQueryString();
+        $totalRevenue = Payment::where('status', 'success')->sum('amount');
+        $monthRevenue = Payment::where('status', 'success')->whereMonth('created_at', now()->month)->sum('amount');
+        return view('admin.payments', compact('payments', 'totalRevenue', 'monthRevenue'));
+    }
+
+    public function promptTemplates()
+    {
+        $templates = \App\Models\PromptTemplate::orderByDesc('is_default')->orderBy('name')->get();
+        return view('admin.prompts.index', compact('templates'));
+    }
+
+    public function createPromptTemplate()
+    {
+        return view('admin.prompts.create');
+    }
+
+    public function storePromptTemplate(Request $request)
+    {
+        $v = $request->validate([
+            'name' => 'required|string|max:100',
+            'slug' => 'required|string|unique:prompt_templates|max:60',
+            'description' => 'nullable|string|max:500',
+            'system_prompt' => 'required|string',
+            'user_prompt_template' => 'nullable|string',
+            'ai_model' => 'required|string|max:60',
+            'max_tokens' => 'required|integer|min:100|max:8000',
+            'temperature' => 'required|numeric|min:0|max:2',
+        ]);
+        $v['is_active']  = $request->boolean('is_active');
+        $v['is_default'] = $request->boolean('is_default');
+        if ($v['is_default']) \App\Models\PromptTemplate::where('is_default', true)->update(['is_default' => false]);
+        \App\Models\PromptTemplate::create($v);
+        return redirect()->route('admin.prompts')->with('success', 'Template created.');
+    }
+
+    public function editPromptTemplate(\App\Models\PromptTemplate $template)
+    {
+        return view('admin.prompts.edit', compact('template'));
+    }
+
+    public function updatePromptTemplate(Request $request, \App\Models\PromptTemplate $template)
+    {
+        $v = $request->validate([
+            'name' => 'required|string|max:100',
+            'description' => 'nullable|string|max:500',
+            'system_prompt' => 'required|string',
+            'user_prompt_template' => 'nullable|string',
+            'ai_model' => 'required|string|max:60',
+            'max_tokens' => 'required|integer|min:100|max:8000',
+            'temperature' => 'required|numeric|min:0|max:2',
+        ]);
+        $v['is_active']  = $request->boolean('is_active');
+        $v['is_default'] = $request->boolean('is_default');
+        if ($v['is_default']) \App\Models\PromptTemplate::where('id','!=',$template->id)->update(['is_default'=>false]);
+        $template->update($v);
+        return redirect()->route('admin.prompts')->with('success', 'Template updated.');
+    }
+
+    public function destroyPromptTemplate(\App\Models\PromptTemplate $template)
+    {
+        if ($template->is_default) return back()->with('error', 'Cannot delete default template.');
+        $template->delete();
+        return redirect()->route('admin.prompts')->with('success', 'Template deleted.');
+    }
+
 }

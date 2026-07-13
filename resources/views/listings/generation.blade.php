@@ -67,6 +67,16 @@
         <button type="button" class="btn-alb-primary btn" onclick="document.getElementById('exportPanel').scrollIntoView({behavior:'smooth'})">
             <i class="bi bi-download me-1"></i> Export
         </button>
+        @if(auth()->user()->plan?->amazon_publish)
+        <form method="POST" action="{{ route('generations.publish', $generation->id) }}" class="d-inline"
+              onsubmit="return confirm('Publish to Amazon Seller Central via SP-API?')">
+            @csrf
+            <button type="submit" class="btn" style="background:{{ $generation->is_published ? '#10B981' : '#FF9900' }};color:white;border:none;font-weight:700;font-size:13.5px;padding:10px 18px;border-radius:9px;display:flex;align-items:center;gap:6px;">
+                @if($generation->is_published)<i class="bi bi-check-circle-fill"></i> Published
+                @else<i class="bi bi-amazon"></i> Publish to Amazon@endif
+            </button>
+        </form>
+        @endif
     </div>
 </div>
 

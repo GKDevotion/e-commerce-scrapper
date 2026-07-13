@@ -79,7 +79,7 @@
                 <strong>{{ $import->target_brand_name }}</strong>. Edit freely — nothing here was AI-generated.
             </div>
 
-            <form method="POST" action="{{ route('generations.manual.store', $import->id) }}" id="manualForm">
+            <form data-warn-unsaved method="POST" action="{{ route('generations.manual.store', $import->id) }}" id="manualForm">
                 @csrf
 
                 <div class="alb-form-group">

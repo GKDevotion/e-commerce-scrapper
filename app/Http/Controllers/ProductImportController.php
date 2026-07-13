@@ -6,7 +6,9 @@ use App\Jobs\ScrapeAmazonProduct;
 use App\Models\ProductImport;
 use App\Services\Scraper\AmazonScraperService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class ProductImportController extends Controller
 {
@@ -79,6 +81,13 @@ class ProductImportController extends Controller
     {
         if ($import->user_id !== Auth::id()) abort(403, 'Unauthorized.');
 
+        // if (!Cache::get('queue_worker_started_'.$import->user_id)) {
+
+        //     Cache::put('queue_worker_started_'.$import->user_id, true, now()->addHours(1));
+
+        //     Artisan::call('queue:work');
+        // }
+        
         $import->load(['aiGenerations' => fn($q) => $q->latest()]);
         $latestGeneration = $import->aiGenerations->first();
 

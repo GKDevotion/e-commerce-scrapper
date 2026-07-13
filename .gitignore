@@ -3,6 +3,9 @@
 /public/storage
 /storage/*.key
 storage/app
+storage/framework/sessions
+storage/framework/views
+storage/framework/cache/data
 storage/logs
 docker
 vendor
@@ -26,8 +29,6 @@ tests
 doc
 *-bkp.pdf
 step-form
-composer.lock
 /public/backend/assets/css/custom.css
 *-bkp.blade.php
-composer.json
 composer.lock

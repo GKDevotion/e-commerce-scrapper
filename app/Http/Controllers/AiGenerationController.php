@@ -189,6 +189,31 @@ class AiGenerationController extends Controller
             ->with('success', 'Listing updated successfully.');
     }
 
+
+    /**
+     * Publish listing to Amazon via SP-API.
+     */
+    public function publish(AiGeneration $generation)
+    {
+        if ($generation->user_id !== Auth::id()) abort(403);
+        if ($generation->status !== 'completed') {
+            return back()->with('error', 'Only completed listings can be published.');
+        }
+        $user = Auth::user();
+        if (!$user->plan?->amazon_publish) {
+            return back()->with('error', 'Amazon SP-API publishing requires the Pro or Enterprise plan.');
+        }
+        if (!$user->amazon_seller_id) {
+            return back()->with('error', 'Set your Amazon Seller ID in profile settings first.');
+        }
+        try {
+            $result = app(\App\Services\Amazon\AmazonSpApiService::class)->submitListing($generation);
+            return back()->with('success', "✅ Published to Amazon! SKU: {$result['sku']}. Appears in Seller Central within 15 min.");
+        } catch (\Exception $e) {
+            return back()->with('error', 'Amazon publish failed: ' . $e->getMessage());
+        }
+    }
+
     public function toggleFavorite(AiGeneration $generation)
     {
         if ($generation->user_id !== Auth::id()) abort(403, 'Unauthorized.');

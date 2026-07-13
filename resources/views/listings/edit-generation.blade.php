@@ -34,7 +34,7 @@
 <div class="row justify-content-center">
     <div class="col-lg-9 fade-in-up">
         <div class="alb-card">
-            <form method="POST" action="{{ route('generations.update', $generation->id) }}" id="editForm">
+            <form data-warn-unsaved method="POST" action="{{ route('generations.update', $generation->id) }}" id="editForm">
                 @csrf @method('PUT')
 
                 <div class="alb-form-group">

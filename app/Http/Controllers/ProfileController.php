@@ -27,7 +27,15 @@ class ProfileController extends Controller
             'default_brand'        => 'nullable|string|max:100',
             'default_manufacturer' => 'nullable|string|max:100',
             'timezone'             => 'nullable|string|max:60',
+            'avatar'               => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
+
+        if ($request->hasFile('avatar')) {
+            if ($user->avatar && \Illuminate\Support\Facades\Storage::disk('public')->exists($user->avatar)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->avatar);
+            }
+            $validated['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        }
 
         $user->update($validated);
 

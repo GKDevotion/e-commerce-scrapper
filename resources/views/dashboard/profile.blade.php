@@ -12,9 +12,20 @@
             <div class="alb-card-header">
                 <h3 class="alb-card-title"><i class="bi bi-person me-2" style="color:#E31837;"></i>Profile Information</h3>
             </div>
-            <form method="POST" action="{{ route('profile.update') }}">
+            <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" data-warn-unsaved>
                 @csrf @method('PUT')
                 <div class="row g-3">
+                    <div class="col-12">
+                        <label class="alb-label">Profile Picture</label>
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="{{ $user->avatar_url }}" id="avatarPreview" style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #FEE2E8;">
+                            <div>
+                                <input type="file" name="avatar" id="avatarInput" accept="image/*" style="display:none" onchange="if(this.files[0]){var r=new FileReader();r.onload=function(e){document.getElementById('avatarPreview').src=e.target.result;};r.readAsDataURL(this.files[0]);}">
+                                <button type="button" onclick="document.getElementById('avatarInput').click()" class="btn-alb-outline btn" style="font-size:12.5px;padding:7px 16px;"><i class="bi bi-camera me-1"></i>Change Photo</button>
+                                <div style="font-size:11.5px;color:#9CA3AF;margin-top:4px;">JPG/PNG/WebP · max 2MB</div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-6">
                         <label class="alb-label">Full Name</label>
                         <input type="text" name="name" class="alb-input" value="{{ old('name', $user->name) }}" required>

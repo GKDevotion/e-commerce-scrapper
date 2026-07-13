@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script>(function(){var t=localStorage.getItem('albTheme');if(t==='dark'){document.documentElement.setAttribute('data-bs-theme','dark');}})()</script>
     <title>@yield('title', 'Dashboard') — Amazon Listing Builder</title>
     <meta name="description" content="AI-powered Amazon product listing generator for sellers">
 
@@ -431,6 +432,18 @@
         <a href="{{ route('admin.analytics') }}" class="alb-nav-item {{ request()->routeIs('admin.analytics') ? 'active' : '' }}">
             <i class="bi bi-bar-chart-fill"></i> Analytics
         </a>
+        <a href="{{ route('admin.payments') }}" class="alb-nav-item {{ request()->routeIs('admin.payments') ? 'active' : '' }}">
+            <i class="bi bi-credit-card-fill"></i> Payments
+        </a>
+        <a href="{{ route('admin.prompts') }}" class="alb-nav-item {{ request()->routeIs('admin.prompts*') ? 'active' : '' }}">
+            <i class="bi bi-file-text-fill"></i> AI Prompts
+        </a>
+        <a href="{{ route('admin.logs.api') }}" class="alb-nav-item {{ request()->routeIs('admin.logs.api') ? 'active' : '' }}">
+            <i class="bi bi-journal-code"></i> API Logs
+        </a>
+        <a href="{{ route('admin.logs.audit') }}" class="alb-nav-item {{ request()->routeIs('admin.logs.audit') ? 'active' : '' }}">
+            <i class="bi bi-shield-check"></i> Audit Logs
+        </a>
         @endif
     </nav>
 
@@ -534,15 +547,11 @@ function toggleDarkMode() {
     localStorage.setItem('albTheme', isDark ? 'light' : 'dark');
 }
 
-// Restore theme
-(function() {
-    const saved = localStorage.getItem('albTheme');
-    if (saved === 'dark') {
-        document.documentElement.setAttribute('data-bs-theme', 'dark');
-        const icon = document.getElementById('darkModeIcon');
-        if (icon) icon.className = 'bi bi-sun-fill';
-    }
-})();
+// Sync icon to already-applied theme
+(function(){var t=localStorage.getItem('albTheme');var i=document.getElementById('darkModeIcon');if(i&&t==='dark')i.className='bi bi-sun-fill';})();
+
+// Unsaved changes warning
+(function(){var d=false;document.querySelectorAll('form[data-warn-unsaved]').forEach(function(f){f.querySelectorAll('input,textarea,select').forEach(function(el){el.addEventListener('change',function(){d=true;});el.addEventListener('input',function(){d=true;});});f.addEventListener('submit',function(){d=false;});});window.addEventListener('beforeunload',function(e){if(d){e.preventDefault();e.returnValue='You have unsaved changes.';}});})();
 
 // Auto-dismiss alerts
 setTimeout(() => {

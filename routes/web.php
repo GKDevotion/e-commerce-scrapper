@@ -63,6 +63,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{generation}',          [AiGenerationController::class, 'show'])->name('view');
         Route::get('/{generation}/edit',     [AiGenerationController::class, 'edit'])->name('edit');
         Route::put('/{generation}',          [AiGenerationController::class, 'update'])->name('update');
+        Route::post('/{generation}/publish',  [AiGenerationController::class, 'publish'])->name('publish');
         Route::post('/{generation}/favorite',[AiGenerationController::class, 'toggleFavorite'])->name('favorite');
         Route::delete('/{generation}',       [AiGenerationController::class, 'destroy'])->name('destroy');
     });
@@ -77,10 +78,14 @@ Route::middleware(['auth'])->group(function () {
 
     // Billing
     Route::prefix('billing')->name('billing.')->group(function () {
-        Route::get('/plans',          [BillingController::class, 'plans'])->name('plans');
-        Route::get('/subscription',   [BillingController::class, 'subscription'])->name('subscription');
-        Route::post('/subscribe/{plan}', [BillingController::class, 'subscribe'])->name('subscribe');
-        Route::post('/cancel',        [BillingController::class, 'cancel'])->name('cancel');
+        Route::get('/plans',               [BillingController::class, 'plans'])->name('plans');
+        Route::get('/subscription',        [BillingController::class, 'subscription'])->name('subscription');
+        Route::get('/checkout/{plan}',     [BillingController::class, 'checkout'])->name('checkout');
+        Route::post('/razorpay/verify',    [BillingController::class, 'verifyRazorpay'])->name('razorpay.verify');
+        Route::post('/stripe/intent',      [BillingController::class, 'createStripeIntent'])->name('stripe.intent');
+        Route::post('/stripe/verify',      [BillingController::class, 'verifyStripe'])->name('stripe.verify');
+        Route::post('/cancel',             [BillingController::class, 'cancel'])->name('cancel');
+        Route::post('/subscribe/{plan}',   [BillingController::class, 'checkout'])->name('subscribe');
     });
 
     // Profile
@@ -116,4 +121,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Analytics
     Route::get('/analytics',                [AdminController::class, 'analytics'])->name('analytics');
+    Route::get('/logs/api',                 [AdminController::class, 'apiLogs'])->name('logs.api');
+    Route::get('/logs/audit',               [AdminController::class, 'auditLogs'])->name('logs.audit');
+    Route::get('/payments',                 [AdminController::class, 'payments'])->name('payments');
+    Route::get('/prompts',                  [AdminController::class, 'promptTemplates'])->name('prompts');
+    Route::get('/prompts/create',           [AdminController::class, 'createPromptTemplate'])->name('prompts.create');
+    Route::post('/prompts',                 [AdminController::class, 'storePromptTemplate'])->name('prompts.store');
+    Route::get('/prompts/{template}/edit',  [AdminController::class, 'editPromptTemplate'])->name('prompts.edit');
+    Route::put('/prompts/{template}',       [AdminController::class, 'updatePromptTemplate'])->name('prompts.update');
+    Route::delete('/prompts/{template}',    [AdminController::class, 'destroyPromptTemplate'])->name('prompts.destroy');
 });
