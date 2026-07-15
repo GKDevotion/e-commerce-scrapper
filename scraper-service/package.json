@@ -6,7 +6,7 @@
   "main": "scrape.js",
   "scripts": {
     "scrape": "node scrape.js",
-    "postinstall": "npx playwright install chromium"
+    "postinstall": "playwright install --with-deps chromium"
   },
   "dependencies": {
     "playwright": "^1.45.0"

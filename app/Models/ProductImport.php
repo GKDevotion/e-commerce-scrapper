@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProductImport extends Model
 {
     protected $fillable = [
-        'user_id', 'amazon_url', 'asin', 'status',
+        'user_id', 'platform', 'amazon_url', 'asin', 'status',
         'original_title', 'original_brand', 'original_manufacturer',
         'original_description', 'original_bullet_points', 'original_specifications',
         'original_images', 'original_category', 'original_attributes',
@@ -57,5 +57,32 @@ class ProductImport extends Model
     {
         $images = $this->original_images;
         return is_array($images) && !empty($images) ? $images[0] : null;
+    }
+
+    public function isAmazon(): bool  { return $this->platform === 'amazon'; }
+    public function isFlipkart(): bool { return $this->platform === 'flipkart'; }
+    public function isMeesho(): bool  { return $this->platform === 'meesho'; }
+
+    public function getPlatformLabelAttribute(): string
+    {
+        return match($this->platform) {
+            'flipkart' => 'Flipkart',
+            'meesho'   => 'Meesho',
+            default    => 'Amazon',
+        };
+    }
+
+    public function getPlatformColorAttribute(): string
+    {
+        return match($this->platform) {
+            'flipkart' => '#2874F0',
+            'meesho'   => '#F43397',
+            default    => '#FF9900',
+        };
+    }
+
+    public function getSourceUrlAttribute(): ?string
+    {
+        return $this->amazon_url; // column stores URL for all platforms
     }
 }

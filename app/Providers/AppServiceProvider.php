@@ -23,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(AiGenerationService::class);
         $this->app->singleton(AmazonSpApiService::class);
         $this->app->singleton(ExportService::class);
+        $this->app->singleton(\App\Services\Scraper\FlipkartScraperService::class);
+        $this->app->singleton(\App\Services\Scraper\MeeshoScraperService::class);
+        $this->app->singleton(\App\Services\Scraper\PlatformScraperRouter::class);
         $this->app->singleton(\App\Services\Export\ImageDownloadService::class);
     }
 
