@@ -100,7 +100,7 @@ class PlatformScraperRouter
 
         return match($platform) {
             'flipkart' => $service->extractProductId($url),
-            'meesho'   => $service->extractProductId($url),
+            'meesho'   => $service->extractProductId($url),   // alphanumeric e.g. ar2bkc
             default    => app(AmazonScraperService::class)->extractAsin($url),
         };
     }

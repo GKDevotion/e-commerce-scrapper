@@ -79,7 +79,9 @@ class MeeshoScraperService
             'Referer'         => 'https://meesho.com/',
             'Origin'          => 'https://meesho.com',
             'x-request-id'   => \Illuminate\Support\Str::uuid(),
-        ])->timeout(20)->get("https://meesho.com/api/v1/products/{$productId}");
+        ])
+        ->withOptions(['cookies' => true])
+        ->timeout(20)->get("https://meesho.com/api/v1/products/{$productId}");
 
         if (!$response->successful()) {
             // Try alternate endpoint
@@ -87,7 +89,9 @@ class MeeshoScraperService
                 'User-Agent' => $this->userAgent,
                 'Accept'     => 'application/json',
                 'Referer'    => $originalUrl,
-            ])->timeout(20)->get("https://meesho.com/api/v2/product_variants/{$productId}");
+            ])
+            ->withOptions(['cookies' => true])
+            ->timeout(20)->get("https://meesho.com/api/v2/product_variants/{$productId}");
         }
 
         if (!$response->successful()) {
@@ -164,13 +168,13 @@ class MeeshoScraperService
         }
 
         return $this->normalize([
-            'title'          => $data['title'] ?? null,
-            'brand'          => $data['brand'] ?? $this->extractBrandFromTitle($data['title'] ?? ''),
-            'price'          => $data['price'] ?? null,
-            'description'    => $data['description'] ?? null,
-            'bullets'        => $data['bullets'] ?? [],
-            'images'         => $data['images'] ?? [],
-            'category'       => $data['category'] ?? null,
+            'title'       => $data['title'] ?? null,
+            'brand'       => $data['brand'] ?? $this->extractBrandFromTitle($data['title'] ?? ''),
+            'price'       => $data['price'] ?? null,
+            'description' => $data['description'] ?? null,
+            'bullets'     => $data['bullets'] ?? $data['highlights'] ?? [],
+            'images'      => $data['images'] ?? [],
+            'category'    => $data['category'] ?? null,
             'specifications' => $data['specifications'] ?? [],
         ], $url);
     }

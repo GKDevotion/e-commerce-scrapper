@@ -39,6 +39,7 @@ class BillingController extends Controller
 
         $amount = $request->billing_cycle === 'yearly' ? $plan->price_yearly : $plan->price_monthly;
         $currency = 'INR';
+        $billingCycle = $request->billing_cycle;
 
         $subscription = Subscription::updateOrCreate(
             ['user_id' => $user->id, 'status' => 'pending', 'plan_id' => $plan->id],
@@ -48,7 +49,7 @@ class BillingController extends Controller
         $gateway = $this->detectGateway();
         if ($gateway === 'razorpay') return $this->razorpayView($plan, $subscription, $amount, $currency, $request->billing_cycle);
         if ($gateway === 'stripe')   return $this->stripeView($plan, $subscription, $amount, $request->billing_cycle);
-        return view('billing.checkout-pending', compact('plan', 'subscription', 'amount', 'currency'));
+        return view('billing.checkout-pending', compact('plan', 'subscription', 'amount', 'currency', 'billingCycle'));
     }
 
     private function razorpayView($plan, $subscription, $amount, $currency, $billingCycle)
@@ -61,10 +62,15 @@ class BillingController extends Controller
 
     private function stripeView($plan, $subscription, $amount, $billingCycle)
     {
-        $user = Auth::user();
+        $user           = Auth::user();
         $publishableKey = config('services.stripe.key');
-        $amountCents = (int)($amount * 100);
-        return view('billing.checkout-stripe', compact('plan','subscription','amount','amountCents','billingCycle','publishableKey','user'));
+        $currency       = strtolower(config('services.stripe.currency', 'inr'));
+        $amountSmallest = (int)($amount * 100); // paise for INR, cents for USD
+        $currencySymbol = $currency === 'inr' ? '₹' : '$';
+        return view('billing.checkout-stripe', compact(
+            'plan','subscription','amount','amountSmallest',
+            'billingCycle','publishableKey','user','currency','currencySymbol'
+        ));
     }
 
     public function verifyRazorpay(Request $request)
@@ -100,8 +106,25 @@ class BillingController extends Controller
         if ($subscription->user_id !== Auth::id()) return response()->json(['error'=>'Unauthorized'],403);
         try {
             \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
-            $intent = \Stripe\PaymentIntent::create(['amount'=>$request->amount_cents,'currency'=>'usd',
-                'metadata'=>['user_id'=>Auth::id(),'plan_id'=>$subscription->plan_id,'subscription_id'=>$subscription->id]]);
+            $subscription->load('plan');
+            $planName = $subscription->plan?->name ?? 'Subscription';
+            $user     = Auth::user();
+
+            $intent = \Stripe\PaymentIntent::create([
+                'amount'                    => $request->amount_cents,
+                // Use INR for India Stripe accounts — avoids "export transaction" error.
+                // Change to 'usd' only if your Stripe account is US/international.
+                'currency'                  => strtolower(config('services.stripe.currency', 'inr')),
+                'description'               => "Amazon Listing Builder — {$planName} Plan ({$subscription->billing_cycle})",
+                'statement_descriptor'      => 'AMZ LISTING BLDR',   // max 22 chars
+                'receipt_email'             => $user->email,
+                'metadata'                  => [
+                    'user_id'         => $user->id,
+                    'plan_id'         => $subscription->plan_id,
+                    'subscription_id' => $subscription->id,
+                    'billing_cycle'   => $subscription->billing_cycle,
+                ],
+            ]);
             return response()->json(['client_secret'=>$intent->client_secret]);
         } catch(\Exception $e) { return response()->json(['error'=>$e->getMessage()],500); }
     }
