@@ -220,7 +220,8 @@ class AdminController extends Controller
             ->groupBy('service')
             ->get();
 
-        $topUsers = User::withCount(['aiGenerations' => fn($q) => $q->where('status', 'completed')])
+        $topUsers = User::with('plan:id,name')
+            ->withCount(['aiGenerations' => fn($q) => $q->where('status', 'completed')])
             ->orderByDesc('ai_generations_count')
             ->take(10)
             ->get();
