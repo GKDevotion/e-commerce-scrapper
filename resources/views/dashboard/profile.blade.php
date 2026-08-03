@@ -55,6 +55,60 @@
                         <label class="alb-label">Default Manufacturer</label>
                         <input type="text" name="default_manufacturer" class="alb-input" value="{{ old('default_manufacturer', $user->default_manufacturer) }}" placeholder="Your manufacturer">
                     </div>
+
+                    {{-- OpenAI API Key section --}}
+                    <div class="col-12">
+                        <div style="border-top:1.5px solid #F3F4F6;padding-top:20px;margin-top:8px;">
+                            <div style="font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">
+                                <i class="bi bi-cpu me-2" style="color:#E31837;"></i>AI Settings
+                            </div>
+                            <div style="font-size:12.5px;color:#6B7280;margin-bottom:14px;line-height:1.6;">
+                                Add your personal OpenAI API key to enable AI-powered listing generation.
+                                Without it you'll be in <strong>manual mode</strong> — you can still create listings by editing scraped data yourself.
+                                <a href="https://platform.openai.com/api-keys" target="_blank" style="color:#E31837;">Get your API key →</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <label class="alb-label">
+                            OpenAI API Key
+                            @if($user->hasOpenAiKey())
+                            <span style="background:#D1FAE5;color:#065F46;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:6px;">Active ✓</span>
+                            @else
+                            <span style="background:#FEF3C7;color:#92400E;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:6px;">Not Set</span>
+                            @endif
+                        </label>
+                        <input type="password" name="openai_api_key" class="alb-input"
+                            placeholder="{{ $user->hasOpenAiKey() ? 'sk-proj-••••••••••••••••••••' : 'sk-proj-...' }}"
+                            value=""
+                            autocomplete="new-password">
+                        <div style="font-size:11.5px;color:#9CA3AF;margin-top:5px;">
+                            Leave blank to keep your existing key. Your key is encrypted and never exposed.
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="alb-label">AI Model</label>
+                        <select name="openai_model" class="alb-input">
+                            @foreach(['gpt-4o','gpt-4o-mini','gpt-4-turbo','gpt-3.5-turbo'] as $m)
+                            <option value="{{ $m }}" {{ ($user->openai_model ?: 'gpt-4o') === $m ? 'selected' : '' }}>
+                                {{ $m }}{{ $m === 'gpt-4o' ? ' (recommended)' : '' }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    @if($user->hasOpenAiKey())
+                    <div class="col-12">
+                        <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:12px 16px;font-size:12.5px;color:#14532D;">
+                            <i class="bi bi-cpu me-1" style="color:#10B981;"></i>
+                            AI generation is <strong>active</strong> using your personal key ({{ $user->openai_model ?: 'gpt-4o' }}).
+                            Costs are billed directly to your OpenAI account.
+                        </div>
+                    </div>
+                    @endif
+
                     <div class="col-12">
                         <button type="submit" class="btn-alb-primary btn">
                             <i class="bi bi-save me-2"></i>Save Profile

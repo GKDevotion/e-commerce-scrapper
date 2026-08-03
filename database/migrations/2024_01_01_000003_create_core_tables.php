@@ -51,7 +51,6 @@ return new class extends Migration
         Schema::create('product_imports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->enum('platform', ['amazon', 'flipkart', 'meesho'])->default('amazon');
             $table->string('amazon_url', 2048);
             $table->string('asin', 20)->nullable();
             $table->enum('status', ['pending', 'scraping', 'scraped', 'processing', 'completed', 'failed'])->default('pending');

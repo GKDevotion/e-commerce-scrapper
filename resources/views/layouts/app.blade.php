@@ -408,9 +408,7 @@
         </a>
 
         <div class="alb-nav-label">Account</div>
-        <a href="{{ route('billing.plans') }}" class="alb-nav-item {{ request()->routeIs('billing.*') ? 'active' : '' }}">
-            <i class="bi bi-credit-card-fill"></i> Plans & Billing
-        </a>
+        {{-- Billing removed in Phase 2 — unlimited listings, personal API key --}}
         <a href="{{ route('profile.index') }}" class="alb-nav-item {{ request()->routeIs('profile.*') ? 'active' : '' }}">
             <i class="bi bi-person-fill"></i> Profile
         </a>
@@ -431,6 +429,12 @@
         </a>
         <a href="{{ route('admin.analytics') }}" class="alb-nav-item {{ request()->routeIs('admin.analytics') ? 'active' : '' }}">
             <i class="bi bi-bar-chart-fill"></i> Analytics
+        </a>
+        <a href="{{ route('admin.platforms') }}" class="alb-nav-item {{ request()->routeIs('admin.platforms*') ? 'active' : '' }}">
+            <i class="bi bi-grid-fill"></i> Platforms
+        </a>
+        <a href="{{ route('admin.ads') }}" class="alb-nav-item {{ request()->routeIs('admin.ads*') ? 'active' : '' }}">
+            <i class="bi bi-megaphone-fill"></i> Advertisements
         </a>
         <a href="{{ route('admin.payments') }}" class="alb-nav-item {{ request()->routeIs('admin.payments') ? 'active' : '' }}">
             <i class="bi bi-credit-card-fill"></i> Payments
@@ -522,7 +526,20 @@
         </div>
         @endif
 
+        {{-- Content top ad slot --}}
+        @foreach(\App\Models\AdSetting::forPlacement('content')->where('slot_key','content_top') as $ad)
+        @if($ad->ad_code)
+        <div class="alb-ad-slot mb-3" style="text-align:center;">{!! $ad->ad_code !!}</div>
+        @endif
+        @endforeach
+
         @yield('content')
+        @php $bottomAds = \App\Models\AdSetting::forPlacement('content')->where('slot_key','content_bottom'); @endphp
+        @foreach($bottomAds as $ad)
+        @if($ad->ad_code)
+        <div class="alb-ad-slot mt-4" style="text-align:center;">{!! $ad->ad_code !!}</div>
+        @endif
+        @endforeach
     </div>
 </main>
 

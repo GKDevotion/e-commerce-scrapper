@@ -79,9 +79,7 @@ class MeeshoScraperService
             'Referer'         => 'https://meesho.com/',
             'Origin'          => 'https://meesho.com',
             'x-request-id'   => \Illuminate\Support\Str::uuid(),
-        ])
-        ->withOptions(['cookies' => true])
-        ->timeout(20)->get("https://meesho.com/api/v1/products/{$productId}");
+        ])->timeout(20)->get("https://meesho.com/api/v1/products/{$productId}");
 
         if (!$response->successful()) {
             // Try alternate endpoint
@@ -89,9 +87,7 @@ class MeeshoScraperService
                 'User-Agent' => $this->userAgent,
                 'Accept'     => 'application/json',
                 'Referer'    => $originalUrl,
-            ])
-            ->withOptions(['cookies' => true])
-            ->timeout(20)->get("https://meesho.com/api/v2/product_variants/{$productId}");
+            ])->timeout(20)->get("https://meesho.com/api/v2/product_variants/{$productId}");
         }
 
         if (!$response->successful()) {

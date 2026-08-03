@@ -133,7 +133,7 @@ class AdminController extends Controller
     // Plans Management
     public function plans()
     {
-        $plans = Plan::orderBy('sort_order')->get();
+        $plans = Plan::withCount('users')->orderBy('sort_order')->get();
         return view('admin.plans.index', compact('plans'));
     }
 
@@ -323,6 +323,40 @@ class AdminController extends Controller
         if ($template->is_default) return back()->with('error', 'Cannot delete default template.');
         $template->delete();
         return redirect()->route('admin.prompts')->with('success', 'Template deleted.');
+    }
+
+
+    // ── Platform Settings ──────────────────────────────────────────────────────
+
+    public function platforms()
+    {
+        $platforms = \App\Models\PlatformSetting::query()->orderBy('sort_order')->get();
+        return view('admin.platforms', compact('platforms'));
+    }
+
+    public function updatePlatform(Request $request, \App\Models\PlatformSetting $platform)
+    {
+        $platform->update(['is_enabled' => $request->boolean('is_enabled')]);
+        \Illuminate\Support\Facades\Cache::forget('enabled_platforms');
+        return back()->with('success', "Platform {$platform->label} updated.");
+    }
+
+    // ── Ad Settings ───────────────────────────────────────────────────────────
+
+    public function adSettings()
+    {
+        $ads = \App\Models\AdSetting::query()->orderBy('provider')->orderBy('placement')->get();
+        return view('admin.ads', compact('ads'));
+    }
+
+    public function updateAd(Request $request, \App\Models\AdSetting $ad)
+    {
+        $ad->update([
+            'is_enabled' => $request->boolean('is_enabled'),
+            'ad_code'    => $request->input('ad_code'),
+        ]);
+        \Illuminate\Support\Facades\Cache::flush();
+        return back()->with('success', "Ad slot {$ad->label} updated.");
     }
 
 }

@@ -24,6 +24,15 @@ class AiGenerationService
      */
     public function generateListing(ProductImport $import, array $options = []): AiGeneration
     {
+        // Use user's personal OpenAI key if set; else fall back to system .env key
+        $user = $import->user;
+        if ($user?->openai_api_key) {
+            $this->apiKey = $user->openai_api_key;
+        }
+        if ($user?->openai_model) {
+            $this->model = $user->openai_model;
+        }
+
         // Create generation record
         $generation = AiGeneration::create([
             'user_id' => $import->user_id,

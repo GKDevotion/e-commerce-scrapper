@@ -18,6 +18,7 @@ class User extends Authenticatable
         'listings_used', 'ai_generations_used', 'amazon_seller_id',
         'default_brand', 'default_manufacturer', 'notes',
         'last_login_at', 'last_login_ip',
+        'openai_api_key', 'openai_model',
     ];
 
     protected $hidden = ['password', 'remember_token'];
@@ -83,30 +84,38 @@ class User extends Authenticatable
         return $this->status === 'suspended';
     }
 
+    /** Unlimited listings — always true in Phase 2 */
     public function canGenerateListing(): bool
     {
-        if (!$this->plan) return $this->listings_used < 5;
-        $limit = $this->plan->listings_limit;
-        if ($limit === -1) return true;
-        return $this->listings_used < $limit;
+        return true;
     }
 
     public function getRemainingListings(): int|string
     {
-        if (!$this->plan) return max(0, 5 - $this->listings_used);
-        $limit = $this->plan->listings_limit;
-        if ($limit === -1) return 'Unlimited';
-        return max(0, $limit - $this->listings_used);
+        return 'Unlimited';
     }
 
     public function getUsagePercentage(): int
     {
-        if (!$this->plan) {
-            return min(100, (int)(($this->listings_used / 5) * 100));
-        }
-        $limit = $this->plan->listings_limit;
-        if ($limit === -1) return 0;
-        return min(100, (int)(($this->listings_used / $limit) * 100));
+        return 0; // no limit, no bar
+    }
+
+    /** Has the user configured their personal OpenAI API key? */
+    public function hasOpenAiKey(): bool
+    {
+        return !empty($this->openai_api_key);
+    }
+
+    /** Effective OpenAI key — user's own key first, fall back to system key */
+    public function effectiveOpenAiKey(): ?string
+    {
+        return $this->openai_api_key ?: config('services.openai.api_key');
+    }
+
+    /** Effective model — user's preference or system default */
+    public function effectiveOpenAiModel(): string
+    {
+        return $this->openai_model ?: config('services.openai.model', 'gpt-4o');
     }
 
     public function getAvatarUrlAttribute(): string

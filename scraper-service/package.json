@@ -2,16 +2,14 @@
   "name": "amazon-listing-builder-scraper",
   "version": "1.0.0",
   "private": true,
-  "description": "Multi-platform product scraper (Amazon, Flipkart, Meesho) for Amazon AI Listing Builder.",
+  "description": "Playwright-based Amazon product scraper sidecar for Amazon AI Listing Builder. Invoked as a child process from the Laravel app because PHP cannot run a headless browser natively.",
   "main": "scrape.js",
   "scripts": {
     "scrape": "node scrape.js",
     "postinstall": "playwright install --with-deps chromium"
   },
   "dependencies": {
-    "playwright": "^1.45.0",
-    "playwright-extra": "^4.3.6",
-    "puppeteer-extra-plugin-stealth": "^2.10.4"
+    "playwright": "^1.45.0"
   },
   "engines": {
     "node": ">=18.0.0"

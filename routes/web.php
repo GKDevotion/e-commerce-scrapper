@@ -121,6 +121,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Analytics
     Route::get('/analytics',                [AdminController::class, 'analytics'])->name('analytics');
+    Route::get('/platforms',                [AdminController::class, 'platforms'])->name('platforms');
+    Route::post('/platforms/{platform}',    [AdminController::class, 'updatePlatform'])->name('platforms.update');
+    Route::get('/ads',                      [AdminController::class, 'adSettings'])->name('ads');
+    Route::post('/ads/{ad}',               [AdminController::class, 'updateAd'])->name('ads.update');
     Route::get('/logs/api',                 [AdminController::class, 'apiLogs'])->name('logs.api');
     Route::get('/logs/audit',               [AdminController::class, 'auditLogs'])->name('logs.audit');
     Route::get('/payments',                 [AdminController::class, 'payments'])->name('payments');

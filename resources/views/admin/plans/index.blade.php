@@ -57,7 +57,7 @@
             <div style="border-top:1px solid #F3F4F6;padding-top:14px;display:flex;flex-direction:column;gap:8px;">
                 <div style="font-size:12px;color:#9CA3AF;display:flex;justify-content:space-between;">
                     <span>Users on this plan:</span>
-                    <strong style="color:#374151;">{{ $plan->users->count() }}</strong>
+                    <strong style="color:#374151;">{{ $plan->users_count }}</strong>
                 </div>
                 <a href="{{ route('admin.plans.edit', $plan->id) }}" class="btn-alb-primary btn text-center" style="font-size:13px;padding:9px;">
                     <i class="bi bi-pencil me-1"></i>Edit Plan

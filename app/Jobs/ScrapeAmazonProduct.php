@@ -7,6 +7,7 @@ use App\Services\Scraper\AmazonScraperService;
 use App\Services\Scraper\FlipkartScraperService;
 use App\Services\Scraper\MeeshoScraperService;
 use App\Services\Scraper\PlaywrightScraperService;
+use App\Services\Scraper\PlatformScraperRouter;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -30,33 +31,31 @@ class ScrapeAmazonProduct implements ShouldQueue
         FlipkartScraperService   $flipkart,
         MeeshoScraperService     $meesho,
     ): void {
-        $url = $this->import->amazon_url;
-
-        // PRIMARY: read platform from DB column
-        // FALLBACK: detect from URL in case the DB column doesn't exist yet
-        //           (happens when migration 000007 hasn't been run)
-        $platform = $this->resolvePlatform($url);
-
-        Log::info("ScrapeJob #{$this->import->id}: platform={$platform}, url={$url}");
+        $platform = $this->import->platform ?? 'amazon';
+        $url      = $this->import->amazon_url;
+        $driver   = config('services.scraper.driver', 'playwright');
 
         try {
             $this->import->update(['status' => 'scraping']);
 
-            match ($platform) {
-                'flipkart' => $this->scrapeFlipkart($flipkart, $url),
-                'meesho'   => $this->scrapeMeesho($meesho, $url),
-                default    => $this->scrapeAmazon($playwright, $amazonHttp, $url),
+            $data = match($platform) {
+                'flipkart' => $flipkart->scrape($url),
+                'meesho'   => $meesho->scrape($url),
+                default    => $this->scrapeAmazon($playwright, $amazonHttp, $url, $driver),
             };
 
-            Log::info("ScrapeJob #{$this->import->id}: completed ({$platform})");
+            $this->storeData($data);
+
+            Log::info("Scraped {$platform} import #{$this->import->id} via " .
+                ($platform === 'amazon' ? $driver : 'dedicated scraper'));
 
         } catch (\Exception $e) {
-            Log::error("ScrapeJob #{$this->import->id} ({$platform}) attempt #{$this->attempts()} failed: " . $e->getMessage());
+            Log::error("Failed to scrape {$platform} import #{$this->import->id}: " . $e->getMessage());
 
             if ($this->attempts() >= $this->tries) {
                 $this->import->update([
                     'status'       => 'failed',
-                    'scrape_error' => "Scraping failed after {$this->tries} attempts. Last error: " . $e->getMessage(),
+                    'scrape_error' => "All {$this->tries} attempts failed. Last: " . $e->getMessage(),
                 ]);
             }
 
@@ -64,113 +63,55 @@ class ScrapeAmazonProduct implements ShouldQueue
         }
     }
 
-    /**
-     * Resolve platform with URL-based fallback.
-     *
-     * Priority:
-     *  1. DB column value (set correctly by ProductImportController)
-     *  2. URL hostname detection (fallback if column missing/null)
-     *  3. 'amazon' as last resort
-     */
-    private function resolvePlatform(string $url): string
-    {
-        // Try DB column first
-        try {
-            $dbValue = $this->import->platform;
-            if ($dbValue && in_array($dbValue, ['amazon', 'flipkart', 'meesho'])) {
-                return $dbValue;
-            }
-        } catch (\Exception $e) {
-            Log::warning("ScrapeJob #{$this->import->id}: could not read platform column ({$e->getMessage()}), detecting from URL");
-        }
-
-        // Detect from URL hostname
-        $host = strtolower(parse_url($url, PHP_URL_HOST) ?? '');
-
-        if (str_contains($host, 'flipkart.com')) {
-            Log::info("ScrapeJob #{$this->import->id}: platform detected from URL = flipkart");
-            return 'flipkart';
-        }
-        if (str_contains($host, 'meesho.com')) {
-            Log::info("ScrapeJob #{$this->import->id}: platform detected from URL = meesho");
-            return 'meesho';
-        }
-
-        return 'amazon';
-    }
-
-    // ── Amazon ────────────────────────────────────────────────────────────────
-
     private function scrapeAmazon(
         PlaywrightScraperService $playwright,
-        AmazonScraperService     $http,
-        string                   $url
-    ): void {
-        $driver = config('services.scraper.driver', 'playwright');
-
+        AmazonScraperService $http,
+        string $url,
+        string $driver
+    ): array {
         if ($driver === 'playwright' && $playwright->isAvailable()) {
             $playwright->scrapeAndStore($this->import);
-            return;
+            return []; // scrapeAndStore writes directly — return empty to skip storeData
         }
 
         if ($driver === 'playwright') {
-            Log::warning("ScrapeJob #{$this->import->id}: Playwright unavailable, using HTTP fallback. "
-                . "Fix: cd scraper-service && npm install && npx playwright install chromium");
+            Log::warning("Playwright not installed, falling back to HTTP for import #{$this->import->id}.");
         }
 
         $http->scrapeAndStore($this->import);
+        return []; // same — scrapeAndStore writes directly
     }
 
-    // ── Flipkart ──────────────────────────────────────────────────────────────
-
-    private function scrapeFlipkart(FlipkartScraperService $scraper, string $url): void
+    /**
+     * Store normalized scraper data for Flipkart/Meesho imports.
+     * Amazon uses its own scrapeAndStore() internally.
+     */
+    private function storeData(array $data): void
     {
-        $data = $scraper->scrape($url);
-        $this->storeScrapedData($data);
-    }
+        if (empty($data)) return; // Amazon path — already stored
 
-    // ── Meesho ────────────────────────────────────────────────────────────────
-
-    private function scrapeMeesho(MeeshoScraperService $scraper, string $url): void
-    {
-        $data = $scraper->scrape($url);
-        $this->storeScrapedData($data);
-    }
-
-    // ── Data writer (Flipkart + Meesho) ───────────────────────────────────────
-
-    private function storeScrapedData(array $data): void
-    {
         if (empty($data['title'])) {
-            throw new \Exception(
-                'Scraper returned no product title. '
-                . 'The page may require Playwright. '
-                . 'Fix: cd scraper-service && npm install && npx playwright install chromium'
-            );
+            throw new \Exception('No product title found in scraped data.');
         }
 
         $this->import->update([
             'status'                  => 'scraped',
             'original_title'          => $data['title'],
-            'original_brand'          => $data['brand']          ?? null,
-            'original_manufacturer'   => $data['manufacturer']   ?? $data['brand'] ?? null,
-            'original_description'    => $data['description']    ?? null,
-            'original_bullet_points'  => $data['bullets']        ?? [],
-            'original_images'         => $data['images']         ?? [],
-            'original_category'       => $data['category']       ?? null,
+            'original_brand'          => $data['brand'] ?? null,
+            'original_manufacturer'   => $data['manufacturer'] ?? $data['brand'] ?? null,
+            'original_description'    => $data['description'] ?? null,
+            'original_bullet_points'  => $data['bullets'] ?? [],
+            'original_images'         => $data['images'] ?? [],
+            'original_category'       => $data['category'] ?? null,
             'original_specifications' => $data['specifications'] ?? [],
-            'original_price'          => $data['price']          ?? null,
-            'original_price_currency' => $data['currency']       ?? 'INR',
+            'original_price'          => $data['price'] ?? null,
+            'original_price_currency' => $data['currency'] ?? 'INR',
             'scraped_at'              => now(),
         ]);
     }
 
-    // ── Permanent failure ─────────────────────────────────────────────────────
-
     public function failed(\Throwable $e): void
     {
-        Log::error("ScrapeJob #{$this->import->id} permanently failed: " . $e->getMessage());
-
         $this->import->update([
             'status'       => 'failed',
             'scrape_error' => 'Job failed after all retries: ' . $e->getMessage(),

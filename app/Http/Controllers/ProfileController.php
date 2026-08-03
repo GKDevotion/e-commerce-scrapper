@@ -28,6 +28,8 @@ class ProfileController extends Controller
             'default_manufacturer' => 'nullable|string|max:100',
             'timezone'             => 'nullable|string|max:60',
             'avatar'               => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'openai_api_key'       => 'nullable|string|max:200',
+            'openai_model'         => 'nullable|string|in:gpt-4o,gpt-4o-mini,gpt-4-turbo,gpt-3.5-turbo',
         ]);
 
         if ($request->hasFile('avatar')) {
@@ -35,6 +37,11 @@ class ProfileController extends Controller
                 \Illuminate\Support\Facades\Storage::disk('public')->delete($user->avatar);
             }
             $validated['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        }
+
+        // Only update OpenAI key when user actually typed something — blank = keep existing
+        if (empty($validated['openai_api_key'])) {
+            unset($validated['openai_api_key']);
         }
 
         $user->update($validated);
