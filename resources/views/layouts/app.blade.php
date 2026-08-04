@@ -381,8 +381,17 @@
         .sidebar-overlay.show { display: block; }
     </style>
     @stack('styles')
+
+    {{-- Analytics head scripts (GA4, GTM, Clarity, etc) --}}
+    @foreach(\App\Models\AnalyticsSetting::enabled() as $analytics)
+    {!! $analytics->renderHeadCode() !!}
+    @endforeach
 </head>
 <body>
+{{-- Analytics body scripts (GTM noscript etc) --}}
+@foreach(\App\Models\AnalyticsSetting::enabled() as $analytics)
+{!! $analytics->renderBodyCode() !!}
+@endforeach
 
 <!-- Sidebar Overlay (Mobile) -->
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
@@ -435,6 +444,9 @@
         </a>
         <a href="{{ route('admin.ads') }}" class="alb-nav-item {{ request()->routeIs('admin.ads*') ? 'active' : '' }}">
             <i class="bi bi-megaphone-fill"></i> Advertisements
+        </a>
+        <a href="{{ route('admin.analytics.settings') }}" class="alb-nav-item {{ request()->routeIs('admin.analytics.settings*') ? 'active' : '' }}">
+            <i class="bi bi-graph-up-arrow"></i> Analytics & Tracking
         </a>
         <a href="{{ route('admin.payments') }}" class="alb-nav-item {{ request()->routeIs('admin.payments') ? 'active' : '' }}">
             <i class="bi bi-credit-card-fill"></i> Payments

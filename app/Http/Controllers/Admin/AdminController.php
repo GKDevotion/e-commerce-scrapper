@@ -360,4 +360,25 @@ class AdminController extends Controller
         return back()->with('success', "Ad slot {$ad->label} updated.");
     }
 
+
+    // ── Analytics Settings ────────────────────────────────────────────────────
+
+    public function analyticsSettings()
+    {
+        $analytics = \App\Models\AnalyticsSetting::query()->orderBy('sort_order')->get();
+        return view('admin.analytics-settings', compact('analytics'));
+    }
+
+    public function updateAnalytics(Request $request, \App\Models\AnalyticsSetting $analytics)
+    {
+        $analytics->update([
+            'is_enabled'   => $request->boolean('is_enabled'),
+            'tracking_id'  => $request->input('tracking_id'),
+            'head_code'    => $request->input('head_code'),
+            'body_code'    => $request->input('body_code'),
+        ]);
+        \Illuminate\Support\Facades\Cache::forget('analytics_enabled');
+        return back()->with('success', "Analytics setting {$analytics->label} updated.");
+    }
+
 }
