@@ -188,7 +188,7 @@ php artisan horizon
 
 | Token | Value |
 |-------|-------|
-| Primary Red | `#E31837` |
+| Primary Red | `#d09226` |
 | Dark Red | `#b01028` |
 | Black | `#0d0d0d` |
 | Font Heading | Sora (800/900) |

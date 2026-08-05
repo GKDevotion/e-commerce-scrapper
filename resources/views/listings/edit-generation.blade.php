@@ -19,10 +19,10 @@
             <span style="color:#111827;">Edit</span>
         </div>
         <h2 style="font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:#111827;margin:0;">
-            <i class="bi bi-pencil-square me-2" style="color:#E31837;"></i>Edit Listing
+            <i class="bi bi-pencil-square me-2" style="color:#d09226;"></i>Edit Listing
         </h2>
     </div>
-    <span style="background:{{ $generation->isAi() ? '#FEE2E8' : '#FEF3C7' }};color:{{ $generation->isAi() ? '#E31837' : '#92400E' }};font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;">
+    <span style="background:{{ $generation->isAi() ? '#FEE2E8' : '#FEF3C7' }};color:{{ $generation->isAi() ? '#d09226' : '#92400E' }};font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;">
         @if($generation->isAi())
         <i class="bi bi-stars me-1"></i>Originally AI-generated
         @else
@@ -44,22 +44,22 @@
 
                 <div class="row g-3 mb-1">
                     <div class="col-md-6">
-                        <label class="alb-label">Brand Name <span style="color:#E31837;">*</span></label>
+                        <label class="alb-label">Brand Name <span style="color:#d09226;">*</span></label>
                         <input type="text" name="brand_name" class="alb-input" value="{{ old('brand_name', $generation->brand_name) }}" required>
                     </div>
                     <div class="col-md-6">
-                        <label class="alb-label">Manufacturer <span style="color:#E31837;">*</span></label>
+                        <label class="alb-label">Manufacturer <span style="color:#d09226;">*</span></label>
                         <input type="text" name="manufacturer" class="alb-input" value="{{ old('manufacturer', $generation->manufacturer) }}" required>
                     </div>
                 </div>
 
                 <div class="alb-form-group">
-                    <label class="alb-label">Product Title <span style="color:#E31837;">*</span></label>
+                    <label class="alb-label">Product Title <span style="color:#d09226;">*</span></label>
                     <input type="text" name="generated_title" class="alb-input" value="{{ old('generated_title', $generation->generated_title) }}" required maxlength="500">
                 </div>
 
                 <div class="alb-form-group">
-                    <label class="alb-label">Bullet Points <span style="color:#E31837;">*</span></label>
+                    <label class="alb-label">Bullet Points <span style="color:#d09226;">*</span></label>
                     <div id="bulletsContainer">
                         @php $editBullets = old('generated_bullet_points', $generation->generated_bullet_points ?: ['']); @endphp
                         @foreach($editBullets as $i => $bullet)
@@ -78,7 +78,7 @@
                 </div>
 
                 <div class="alb-form-group">
-                    <label class="alb-label">Product Description <span style="color:#E31837;">*</span></label>
+                    <label class="alb-label">Product Description <span style="color:#d09226;">*</span></label>
                     <textarea name="generated_description" class="alb-input alb-textarea" style="min-height:160px;" required>{{ old('generated_description', $generation->generated_description) }}</textarea>
                 </div>
 

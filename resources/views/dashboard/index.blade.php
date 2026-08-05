@@ -12,7 +12,7 @@
 @php $user = auth()->user(); @endphp
 
 <!-- Welcome Banner -->
-<div class="alb-card fade-in-up mb-4" style="background:linear-gradient(135deg,#E31837 0%,#b01028 100%);border:none;color:white;">
+<div class="alb-card fade-in-up mb-4" style="background:linear-gradient(135deg, #d09226 0%, #c58a22 100%);border:none;color:white;">
     <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
         <div>
             <h2 style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;margin:0 0 6px;">
@@ -83,7 +83,7 @@
     @if($stats['total_imports'] === 0)
     <div class="col-12 fade-in-up">
         <div class="alb-card text-center" style="padding:48px 24px;">
-            <div style="width:80px;height:80px;background:#FEE2E8;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:36px;color:#E31837;">
+            <div style="width:80px;height:80px;background:#FEE2E8;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:36px;color:#d09226;">
                 <i class="bi bi-robot"></i>
             </div>
             <h3 style="font-family:'Sora',sans-serif;font-size:20px;font-weight:700;margin-bottom:10px;">Create Your First Listing</h3>
@@ -101,13 +101,13 @@
     <div class="col-lg-8 fade-in-up">
         <div class="alb-card">
             <div class="alb-card-header">
-                <h3 class="alb-card-title"><i class="bi bi-clock-history me-2" style="color:#E31837;"></i>Recent Generations</h3>
-                <a href="{{ route('listings.index') }}" style="font-size:13px;color:#E31837;text-decoration:none;font-weight:600;">View all →</a>
+                <h3 class="alb-card-title"><i class="bi bi-clock-history me-2" style="color:#d09226;"></i>Recent Generations</h3>
+                <a href="{{ route('listings.index') }}" style="font-size:13px;color:#d09226;text-decoration:none;font-weight:600;">View all →</a>
             </div>
             @if($recentGenerations->isEmpty())
                 <div style="text-align:center;padding:32px;color:#9CA3AF;">
                     <i class="bi bi-inbox" style="font-size:32px;display:block;margin-bottom:10px;"></i>
-                    No generations yet. <a href="{{ route('listings.create') }}" style="color:#E31837;">Create one →</a>
+                    No generations yet. <a href="{{ route('listings.create') }}" style="color:#d09226;">Create one →</a>
                 </div>
             @else
             <div style="display:flex;flex-direction:column;gap:2px;">
@@ -137,7 +137,7 @@
                             <span class="spinner-border spinner-border-sm me-1" style="width:10px;height:10px;border-width:2px;"></span>AI Working
                         </span>
                     @elseif($gen->status === 'failed')
-                        <span style="background:#FEE2E2;color:#991B1B;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap;">Failed</span>
+                        <span style="background:#d09226;color:#b1740a;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap;">Failed</span>
                     @endif
                 </a>
                 @endforeach
@@ -151,7 +151,7 @@
         <!-- Usage Card -->
         <div class="alb-card mb-4">
             <div class="alb-card-header">
-                <h3 class="alb-card-title"><i class="bi bi-pie-chart me-2" style="color:#E31837;"></i>Usage</h3>
+                <h3 class="alb-card-title"><i class="bi bi-pie-chart me-2" style="color:#d09226;"></i>Usage</h3>
                 <span style="font-size:12px;color:#9CA3AF;">{{ $user->plan?->name ?? 'Free' }} Plan</span>
             </div>
             <div>
@@ -160,15 +160,15 @@
                     <strong style="color:#111827;">{{ $user->listings_used }} / {{ $user->plan?->listings_limit_display ?? '5' }}</strong>
                 </div>
                 <div class="usage-bar-track mb-3">
-                    <div class="usage-bar-fill" style="width:{{ $stats['usage_percentage'] }}%;background:{{ $stats['usage_percentage'] >= 80 ? '#EF4444' : '#E31837' }};"></div>
+                    <div class="usage-bar-fill" style="width:{{ $stats['usage_percentage'] }}%;background:{{ $stats['usage_percentage'] >= 80 ? '#EF4444' : '#d09226' }};"></div>
                 </div>
                 @if($stats['usage_percentage'] >= 80)
-                <div style="background:#FEE2E2;border:1px solid #FCA5A5;border-radius:8px;padding:10px 14px;font-size:12.5px;color:#991B1B;margin-bottom:12px;">
+                <div style="background:#d09226;border:1px solid #FCA5A5;border-radius:8px;padding:10px 14px;font-size:12.5px;color:#b1740a;margin-bottom:12px;">
                     <i class="bi bi-exclamation-triangle me-1"></i>
                     You're running low on listings. Upgrade to continue.
                 </div>
                 @endif
-                <a href="{{ route('billing.plans') }}" style="display:block;text-align:center;background:#FEE2E8;color:#E31837;border-radius:9px;padding:10px;font-size:13px;font-weight:700;text-decoration:none;transition:background 0.15s;" onmouseover="this.style.background='#FECDD3'" onmouseout="this.style.background='#FEE2E8'">
+                <a href="{{ route('billing.plans') }}" style="display:block;text-align:center;background:#d09226;color:#fff;border-radius:9px;padding:10px;font-size:13px;font-weight:700;text-decoration:none;transition:background 0.15s;" onmouseover="this.style.background='#d09226'" onmouseout="this.style.background='#FEE2E8'">
                     <i class="bi bi-arrow-up-circle me-1"></i>Upgrade Plan
                 </a>
             </div>
@@ -176,10 +176,10 @@
 
         <!-- Quick Actions -->
         <div class="alb-card">
-            <h3 class="alb-card-title mb-3"><i class="bi bi-grid me-2" style="color:#E31837;"></i>Quick Actions</h3>
+            <h3 class="alb-card-title mb-3"><i class="bi bi-grid me-2" style="color:#d09226;"></i>Quick Actions</h3>
             <div style="display:flex;flex-direction:column;gap:8px;">
-                <a href="{{ route('listings.create') }}" style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#F9FAFB;border-radius:10px;text-decoration:none;color:#374151;font-size:13.5px;font-weight:500;transition:all 0.15s;border:1px solid #F3F4F6;" onmouseover="this.style.background='#FEE2E8';this.style.color='#E31837'" onmouseout="this.style.background='#F9FAFB';this.style.color='#374151'">
-                    <i class="bi bi-plus-circle" style="font-size:18px;color:#E31837;"></i>
+                <a href="{{ route('listings.create') }}" style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#F9FAFB;border-radius:10px;text-decoration:none;color:#374151;font-size:13.5px;font-weight:500;transition:all 0.15s;border:1px solid #F3F4F6;" onmouseover="this.style.background='#FEE2E8';this.style.color='#d09226'" onmouseout="this.style.background='#F9FAFB';this.style.color='#374151'">
+                    <i class="bi bi-plus-circle" style="font-size:18px;color:#d09226;"></i>
                     New Amazon Import
                 </a>
                 <a href="{{ route('listings.index') }}" style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#F9FAFB;border-radius:10px;text-decoration:none;color:#374151;font-size:13.5px;font-weight:500;transition:all 0.15s;border:1px solid #F3F4F6;" onmouseover="this.style.background='#F0F9FF';this.style.color='#3B82F6'" onmouseout="this.style.background='#F9FAFB';this.style.color='#374151'">

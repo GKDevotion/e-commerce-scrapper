@@ -13,7 +13,7 @@
     <div class="col-lg-8">
         <div class="alb-card fade-in-up">
             <h3 class="alb-card-title mb-4">
-                <i class="bi bi-layers me-2" style="color:#E31837;"></i>
+                <i class="bi bi-layers me-2" style="color:#d09226;"></i>
                 {{ isset($plan) ? 'Edit Plan' : 'Create New Plan' }}
             </h3>
 
@@ -23,11 +23,11 @@
 
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="alb-label">Plan Name <span style="color:#E31837;">*</span></label>
+                        <label class="alb-label">Plan Name <span style="color:#d09226;">*</span></label>
                         <input type="text" name="name" class="alb-input" value="{{ old('name', $plan->name ?? '') }}" required placeholder="e.g. Pro">
                     </div>
                     <div class="col-md-6">
-                        <label class="alb-label">Slug (unique) <span style="color:#E31837;">*</span></label>
+                        <label class="alb-label">Slug (unique) <span style="color:#d09226;">*</span></label>
                         <input type="text" name="slug" class="alb-input" value="{{ old('slug', $plan->slug ?? '') }}" required placeholder="e.g. pro" {{ isset($plan) ? 'readonly' : '' }}>
                     </div>
                     <div class="col-12">
@@ -87,7 +87,7 @@
                                         <span id="toggle_display_{{ $field }}" style="
                                             position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;
                                             border-radius:24px;transition:0.15s;
-                                            background:{{ old($field, $plan?->{$field} ?? ($field === 'is_active')) ? '#E31837' : '#E5E7EB' }};
+                                            background:{{ old($field, $plan?->{$field} ?? ($field === 'is_active')) ? '#d09226' : '#E5E7EB' }};
                                         ">
                                             <span style="position:absolute;content:'';height:18px;width:18px;left:3px;bottom:3px;border-radius:50%;background:white;transition:0.15s;
                                                 transform:{{ old($field, $plan?->{$field} ?? ($field === 'is_active')) ? 'translateX(20px)' : 'translateX(0)' }};display:block;"></span>
@@ -118,7 +118,7 @@ function updateToggle(field) {
     const display = document.getElementById('toggle_display_' + field);
     const thumb = display.querySelector('span');
     if (cb.checked) {
-        display.style.background = '#E31837';
+        display.style.background = '#d09226';
         thumb.style.transform = 'translateX(20px)';
     } else {
         display.style.background = '#E5E7EB';

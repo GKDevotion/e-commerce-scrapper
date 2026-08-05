@@ -27,7 +27,7 @@
                 @if($user->status === 'active')
                 <span style="background:#D1FAE5;color:#065F46;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;">Active</span>
                 @elseif($user->status === 'suspended')
-                <span style="background:#FEE2E2;color:#991B1B;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;">Suspended</span>
+                <span style="background:#d09226;color:#b1740a;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;">Suspended</span>
                 @endif
                 <span style="background:#DBEAFE;color:#1E40AF;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;">{{ $user->plan?->name ?? 'Free' }}</span>
             </div>
@@ -53,10 +53,10 @@
 
         <!-- Stats -->
         <div class="alb-card">
-            <h3 class="alb-card-title mb-3"><i class="bi bi-bar-chart me-2" style="color:#E31837;"></i>Usage Stats</h3>
+            <h3 class="alb-card-title mb-3"><i class="bi bi-bar-chart me-2" style="color:#d09226;"></i>Usage Stats</h3>
             @php
             $userStats = [
-                ['Imports', $user->productImports->count(), 'bi-collection', '#E31837'],
+                ['Imports', $user->productImports->count(), 'bi-collection', '#d09226'],
                 ['AI Generations', $user->aiGenerations->count(), 'bi-cpu', '#8B5CF6'],
                 ['Completed', $user->aiGenerations->where('status','completed')->count(), 'bi-check-circle', '#10B981'],
                 ['Exports', $user->exports->count(), 'bi-download', '#3B82F6'],
@@ -81,7 +81,7 @@
     <div class="col-lg-8 fade-in-up fade-in-up-delay-1">
         <!-- Edit form -->
         <div class="alb-card mb-4">
-            <h3 class="alb-card-title mb-4"><i class="bi bi-pencil me-2" style="color:#E31837;"></i>Edit User</h3>
+            <h3 class="alb-card-title mb-4"><i class="bi bi-pencil me-2" style="color:#d09226;"></i>Edit User</h3>
             <form method="POST" action="{{ route('admin.users.update', $user->id) }}">
                 @csrf @method('PUT')
                 <div class="row g-3">
@@ -133,7 +133,7 @@
         <!-- Recent Listings -->
         <div class="alb-card">
             <div class="alb-card-header">
-                <h3 class="alb-card-title"><i class="bi bi-collection me-2" style="color:#E31837;"></i>Recent Imports</h3>
+                <h3 class="alb-card-title"><i class="bi bi-collection me-2" style="color:#d09226;"></i>Recent Imports</h3>
                 <span style="font-size:12.5px;color:#9CA3AF;">{{ $user->productImports->count() }} total</span>
             </div>
             @if($user->productImports->isEmpty())

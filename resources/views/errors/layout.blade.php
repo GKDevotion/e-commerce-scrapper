@@ -34,7 +34,7 @@
             font-size: clamp(80px, 15vw, 160px);
             font-weight: 900;
             line-height: 1;
-            background: linear-gradient(135deg, #E31837, #ff6b6b);
+            background: linear-gradient(135deg, #d09226, #ff6b6b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -42,7 +42,7 @@
         }
         .error-icon {
             font-size: 48px;
-            color: #E31837;
+            color: #d09226;
             display: block;
             margin-bottom: 20px;
         }
@@ -60,7 +60,7 @@
             margin: 0 auto 32px;
         }
         .btn-home {
-            background: #E31837;
+            background: #d09226;
             color: white;
             text-decoration: none;
             font-size: 15px;

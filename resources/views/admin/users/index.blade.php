@@ -86,7 +86,7 @@
                         @if($user->status === 'active')
                         <span style="background:#D1FAE5;color:#065F46;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:20px;">Active</span>
                         @elseif($user->status === 'suspended')
-                        <span style="background:#FEE2E2;color:#991B1B;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:20px;">Suspended</span>
+                        <span style="background:#d09226;color:#b1740a;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:20px;">Suspended</span>
                         @else
                         <span style="background:#FEF3C7;color:#92400E;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:20px;">{{ ucfirst($user->status) }}</span>
                         @endif
@@ -118,7 +118,7 @@
                             @if(auth()->id() !== $user->id && $user->role !== 'admin')
                             <form method="POST" action="{{ route('admin.users.delete', $user->id) }}" class="d-inline">
                                 @csrf @method('DELETE')
-                                <button type="submit" style="background:#FEE2E2;border:none;color:#991B1B;padding:6px 12px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;" onclick="return confirm('Permanently delete {{ $user->name }}? This cannot be undone.')">
+                                <button type="submit" style="background:#d09226;border:none;color:#b1740a;padding:6px 12px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;" onclick="return confirm('Permanently delete {{ $user->name }}? This cannot be undone.')">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </form>

@@ -269,7 +269,7 @@
         /* ===== BADGES ===== */
         .badge-status-completed { background: #D1FAE5; color: #065F46; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
         .badge-status-pending { background: #FEF3C7; color: #92400E; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
-        .badge-status-failed { background: #FEE2E2; color: #991B1B; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+        .badge-status-failed { background: #d09226; color: #b1740a; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
         .badge-status-processing { background: #DBEAFE; color: #1E40AF; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
 
         /* ===== FORMS ===== */
@@ -327,7 +327,7 @@
             gap: 10px;
         }
         .alb-alert.success { background: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; }
-        .alb-alert.error { background: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
+        .alb-alert.error { background: #d09226; color: #b1740a; border: 1px solid #FCA5A5; }
         .alb-alert.warning { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; }
         .alb-alert.info { background: #DBEAFE; color: #1E40AF; border: 1px solid #BFDBFE; }
 

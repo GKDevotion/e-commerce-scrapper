@@ -17,7 +17,7 @@ $plans = \App\Models\Plan::where('is_active', true)->orderBy('sort_order')->get(
     </p>
     <!-- Billing toggle -->
     <div style="display:inline-flex;align-items:center;gap:12px;margin-top:20px;background:#F3F4F6;border-radius:99px;padding:4px 6px;">
-        <button id="btnMonthly" onclick="setBilling('monthly')" style="padding:8px 20px;border-radius:99px;font-size:13.5px;font-weight:700;border:none;cursor:pointer;background:#E31837;color:white;transition:all 0.15s;">Monthly</button>
+        <button id="btnMonthly" onclick="setBilling('monthly')" style="padding:8px 20px;border-radius:99px;font-size:13.5px;font-weight:700;border:none;cursor:pointer;background:#d09226;color:white;transition:all 0.15s;">Monthly</button>
         <button id="btnYearly" onclick="setBilling('yearly')" style="padding:8px 20px;border-radius:99px;font-size:13.5px;font-weight:700;border:none;cursor:pointer;background:transparent;color:#6B7280;transition:all 0.15s;">
             Yearly <span style="background:#D1FAE5;color:#065F46;font-size:10px;font-weight:700;padding:2px 6px;border-radius:20px;margin-left:4px;">Save 20%</span>
         </button>
@@ -34,7 +34,7 @@ $plans = \App\Models\Plan::where('is_active', true)->orderBy('sort_order')->get(
         <div style="
             background:white;
             border-radius:16px;
-            border:{{ $isFeatured ? '2px solid #E31837' : '1.5px solid #E5E7EB' }};
+            border:{{ $isFeatured ? '2px solid #d09226' : '1.5px solid #E5E7EB' }};
             position:relative;
             height:100%;
             display:flex;
@@ -44,7 +44,7 @@ $plans = \App\Models\Plan::where('is_active', true)->orderBy('sort_order')->get(
         " onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 40px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
 
             @if($isFeatured)
-            <div style="background:linear-gradient(135deg,#E31837,#b01028);color:white;text-align:center;padding:8px;font-size:11.5px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;">
+            <div style="background:linear-gradient(135deg,#d09226,#b01028);color:white;text-align:center;padding:8px;font-size:11.5px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;">
                 ⭐ Most Popular
             </div>
             @endif
@@ -119,7 +119,7 @@ $plans = \App\Models\Plan::where('is_active', true)->orderBy('sort_order')->get(
                 @else
                 <a href="{{ route('billing.checkout', $plan->id) }}?billing_cycle={{ request('cycle','monthly') }}"
                    id="cta-{{ $plan->id }}"
-                   style="display:block;text-align:center;background:{{ $isFeatured ? 'linear-gradient(135deg,#E31837,#b01028)' : 'white' }};color:{{ $isFeatured ? 'white' : '#E31837' }};border:{{ $isFeatured ? 'none' : '2px solid #E31837' }};padding:13px;border-radius:10px;font-size:14px;font-weight:700;font-family:'Sora',sans-serif;text-decoration:none;transition:all 0.15s;"
+                   style="display:block;text-align:center;background:{{ $isFeatured ? 'linear-gradient(135deg,#d09226,#b01028)' : 'white' }};color:{{ $isFeatured ? 'white' : '#d09226' }};border:{{ $isFeatured ? 'none' : '2px solid #d09226' }};padding:13px;border-radius:10px;font-size:14px;font-weight:700;font-family:'Sora',sans-serif;text-decoration:none;transition:all 0.15s;"
                    onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                    Get {{ $plan->name }}
                    @if($currentPlan && $plan->price_monthly > ($currentPlan->price_monthly ?? 0)) — Upgrade
@@ -161,9 +161,9 @@ $plans = \App\Models\Plan::where('is_active', true)->orderBy('sort_order')->get(
 let billingMode = 'monthly';
 function setBilling(mode) {
     billingMode = mode;
-    document.getElementById('btnMonthly').style.background = mode === 'monthly' ? '#E31837' : 'transparent';
+    document.getElementById('btnMonthly').style.background = mode === 'monthly' ? '#d09226' : 'transparent';
     document.getElementById('btnMonthly').style.color = mode === 'monthly' ? 'white' : '#6B7280';
-    document.getElementById('btnYearly').style.background = mode === 'yearly' ? '#E31837' : 'transparent';
+    document.getElementById('btnYearly').style.background = mode === 'yearly' ? '#d09226' : 'transparent';
     document.getElementById('btnYearly').style.color = mode === 'yearly' ? 'white' : '#6B7280';
 
     document.querySelectorAll('[id^="price-monthly-"]').forEach(el => el.style.display = mode === 'monthly' ? 'flex' : 'none');

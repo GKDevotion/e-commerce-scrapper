@@ -37,7 +37,7 @@
     <div class="col-lg-8 fade-in-up">
         <div class="alb-card">
             <div class="alb-card-header">
-                <h3 class="alb-card-title"><i class="bi bi-bar-chart me-2" style="color:#E31837;"></i>New Registrations (30 days)</h3>
+                <h3 class="alb-card-title"><i class="bi bi-bar-chart me-2" style="color:#d09226;"></i>New Registrations (30 days)</h3>
             </div>
             <div style="height:220px;position:relative;">
                 <canvas id="growthChart"></canvas>
@@ -49,14 +49,14 @@
     <div class="col-lg-4 fade-in-up">
         <div class="alb-card">
             <div class="alb-card-header">
-                <h3 class="alb-card-title"><i class="bi bi-pie-chart me-2" style="color:#E31837;"></i>Plan Distribution</h3>
+                <h3 class="alb-card-title"><i class="bi bi-pie-chart me-2" style="color:#d09226;"></i>Plan Distribution</h3>
             </div>
             @php $totalUsers = $planDistribution->sum('count'); @endphp
             @foreach($planDistribution as $dist)
             @php
             $plan = \App\Models\Plan::find($dist->plan_id);
             $pct = $totalUsers > 0 ? round(($dist->count / $totalUsers) * 100) : 0;
-            $colors = ['#E31837','#3B82F6','#10B981','#8B5CF6','#F59E0B'];
+            $colors = ['#d09226','#3B82F6','#10B981','#8B5CF6','#F59E0B'];
             $ci = $loop->index % count($colors);
             @endphp
             <div style="margin-bottom:12px;">
@@ -76,8 +76,8 @@
     <div class="col-lg-6 fade-in-up">
         <div class="alb-card">
             <div class="alb-card-header">
-                <h3 class="alb-card-title"><i class="bi bi-people me-2" style="color:#E31837;"></i>Recent Users</h3>
-                <a href="{{ route('admin.users') }}" style="font-size:13px;color:#E31837;text-decoration:none;font-weight:600;">View all →</a>
+                <h3 class="alb-card-title"><i class="bi bi-people me-2" style="color:#d09226;"></i>Recent Users</h3>
+                <a href="{{ route('admin.users') }}" style="font-size:13px;color:#d09226;text-decoration:none;font-weight:600;">View all →</a>
             </div>
             <table class="alb-table">
                 <thead>
@@ -105,7 +105,7 @@
                             @if($u->status === 'active')
                             <span style="background:#D1FAE5;color:#065F46;font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;">Active</span>
                             @elseif($u->status === 'suspended')
-                            <span style="background:#FEE2E2;color:#991B1B;font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;">Suspended</span>
+                            <span style="background:#d09226;color:#b1740a;font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;">Suspended</span>
                             @else
                             <span style="background:#FEF3C7;color:#92400E;font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;">{{ ucfirst($u->status) }}</span>
                             @endif
@@ -122,7 +122,7 @@
     <div class="col-lg-6 fade-in-up">
         <div class="alb-card">
             <div class="alb-card-header">
-                <h3 class="alb-card-title"><i class="bi bi-credit-card me-2" style="color:#E31837;"></i>Recent Payments</h3>
+                <h3 class="alb-card-title"><i class="bi bi-credit-card me-2" style="color:#d09226;"></i>Recent Payments</h3>
                 <div style="font-size:13px;font-weight:700;color:#10B981;">
                     Total: ${{ number_format($stats['total_revenue'], 2) }}
                 </div>
@@ -147,7 +147,7 @@
                             @if($payment->status === 'success')
                             <span style="background:#D1FAE5;color:#065F46;font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;">Paid</span>
                             @else
-                            <span style="background:#FEE2E2;color:#991B1B;font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;">{{ ucfirst($payment->status) }}</span>
+                            <span style="background:#d09226;color:#b1740a;font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;">{{ ucfirst($payment->status) }}</span>
                             @endif
                         </td>
                     </tr>
@@ -161,11 +161,11 @@
     <!-- Quick Actions -->
     <div class="col-12 fade-in-up">
         <div class="alb-card">
-            <h3 class="alb-card-title mb-4"><i class="bi bi-lightning me-2" style="color:#E31837;"></i>Quick Admin Actions</h3>
+            <h3 class="alb-card-title mb-4"><i class="bi bi-lightning me-2" style="color:#d09226;"></i>Quick Admin Actions</h3>
             <div class="row g-3">
                 <div class="col-6 col-md-3">
-                    <a href="{{ route('admin.users') }}" style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px;background:#F9FAFB;border-radius:12px;text-decoration:none;color:#374151;border:1.5px solid #F3F4F6;transition:all 0.15s;" onmouseover="this.style.background='#FEE2E8';this.style.borderColor='#E31837'" onmouseout="this.style.background='#F9FAFB';this.style.borderColor='#F3F4F6'">
-                        <i class="bi bi-people-fill" style="font-size:28px;color:#E31837;"></i>
+                    <a href="{{ route('admin.users') }}" style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px;background:#F9FAFB;border-radius:12px;text-decoration:none;color:#374151;border:1.5px solid #F3F4F6;transition:all 0.15s;" onmouseover="this.style.background='#FEE2E8';this.style.borderColor='#d09226'" onmouseout="this.style.background='#F9FAFB';this.style.borderColor='#F3F4F6'">
+                        <i class="bi bi-people-fill" style="font-size:28px;color:#d09226;"></i>
                         <span style="font-size:13.5px;font-weight:700;">Manage Users</span>
                     </a>
                 </div>
@@ -221,7 +221,7 @@ new Chart(document.getElementById('growthChart'), {
             {
                 label: 'New Users',
                 data: userValues,
-                borderColor: '#E31837',
+                borderColor: '#d09226',
                 backgroundColor: 'rgba(227,24,55,0.08)',
                 fill: true,
                 tension: 0.4,

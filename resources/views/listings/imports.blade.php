@@ -11,7 +11,7 @@
 @section('content')
 @if($imports->isEmpty())
 <div class="alb-card text-center fade-in-up" style="padding:64px 24px;">
-    <div style="width:80px;height:80px;background:#FEE2E8;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:36px;color:#E31837;">
+    <div style="width:80px;height:80px;background:#FEE2E8;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:36px;color:#d09226;">
         <i class="bi bi-collection"></i>
     </div>
     <h3 style="font-family:'Sora',sans-serif;font-size:20px;font-weight:700;margin-bottom:10px;">No Listings Yet</h3>
@@ -80,7 +80,7 @@
             <div style="padding:16px;">
                 <div style="font-size:13.5px;font-weight:600;color:#111827;line-height:1.4;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
                     @if($gen?->generated_title)
-                        <span style="color:#E31837;">✦</span> {{ $gen->generated_title }}
+                        <span style="color:#d09226;">✦</span> {{ $gen->generated_title }}
                     @else
                         {{ $import->original_title ?? 'Importing...' }}
                     @endif
@@ -95,11 +95,11 @@
                 <!-- Action buttons -->
                 <div class="d-flex gap-2">
                     @if($gen?->status === 'completed')
-                    <a href="{{ route('generations.view', $gen->id) }}" class="btn btn-sm" style="flex:1;background:#E31837;color:white;font-size:12px;font-weight:700;border-radius:8px;padding:8px;text-align:center;text-decoration:none;border:none;">
+                    <a href="{{ route('generations.view', $gen->id) }}" class="btn btn-sm" style="flex:1;background:#d09226;color:white;font-size:12px;font-weight:700;border-radius:8px;padding:8px;text-align:center;text-decoration:none;border:none;">
                         <i class="bi bi-eye me-1"></i>View
                     </a>
                     @elseif($import->status === 'scraped')
-                    <a href="{{ route('listings.show', $import->id) }}" class="btn btn-sm" style="flex:1;background:#E31837;color:white;font-size:12px;font-weight:700;border-radius:8px;padding:8px;text-align:center;text-decoration:none;border:none;">
+                    <a href="{{ route('listings.show', $import->id) }}" class="btn btn-sm" style="flex:1;background:#d09226;color:white;font-size:12px;font-weight:700;border-radius:8px;padding:8px;text-align:center;text-decoration:none;border:none;">
                         <i class="bi bi-stars me-1"></i>Create Listing
                     </a>
                     @else

@@ -10,7 +10,7 @@
     <div class="col-lg-7 fade-in-up">
         <div class="alb-card">
             <div class="alb-card-header">
-                <h3 class="alb-card-title"><i class="bi bi-person me-2" style="color:#E31837;"></i>Profile Information</h3>
+                <h3 class="alb-card-title"><i class="bi bi-person me-2" style="color:#d09226;"></i>Profile Information</h3>
             </div>
             <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" data-warn-unsaved>
                 @csrf @method('PUT')
@@ -44,7 +44,7 @@
                     </div>
                     <div class="col-12" style="border-top:1px solid #F3F4F6;padding-top:16px;margin-top:4px;">
                         <div style="font-size:12.5px;font-weight:700;color:#374151;margin-bottom:12px;">
-                            <i class="bi bi-tag me-1" style="color:#E31837;"></i>Default Brand Defaults (pre-fills new imports)
+                            <i class="bi bi-tag me-1" style="color:#d09226;"></i>Default Brand Defaults (pre-fills new imports)
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -60,12 +60,12 @@
                     <div class="col-12">
                         <div style="border-top:1.5px solid #F3F4F6;padding-top:20px;margin-top:8px;">
                             <div style="font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">
-                                <i class="bi bi-cpu me-2" style="color:#E31837;"></i>AI Settings
+                                <i class="bi bi-cpu me-2" style="color:#d09226;"></i>AI Settings
                             </div>
                             <div style="font-size:12.5px;color:#6B7280;margin-bottom:14px;line-height:1.6;">
                                 Add your personal OpenAI API key to enable AI-powered listing generation.
                                 Without it you'll be in <strong>manual mode</strong> — you can still create listings by editing scraped data yourself.
-                                <a href="https://platform.openai.com/api-keys" target="_blank" style="color:#E31837;">Get your API key →</a>
+                                <a href="https://platform.openai.com/api-keys" target="_blank" style="color:#d09226;">Get your API key →</a>
                             </div>
                         </div>
                     </div>
@@ -121,7 +121,7 @@
         <!-- Change Password -->
         <div class="alb-card mt-4">
             <div class="alb-card-header">
-                <h3 class="alb-card-title"><i class="bi bi-shield-lock me-2" style="color:#E31837;"></i>Change Password</h3>
+                <h3 class="alb-card-title"><i class="bi bi-shield-lock me-2" style="color:#d09226;"></i>Change Password</h3>
             </div>
             <form method="POST" action="{{ route('profile.password') }}">
                 @csrf @method('PUT')
@@ -153,13 +153,13 @@
         <!-- Account Summary -->
         <div class="alb-card mb-4">
             <div class="alb-card-header">
-                <h3 class="alb-card-title"><i class="bi bi-person-badge me-2" style="color:#E31837;"></i>Account Summary</h3>
+                <h3 class="alb-card-title"><i class="bi bi-person-badge me-2" style="color:#d09226;"></i>Account Summary</h3>
             </div>
             <div style="text-align:center;padding:16px 0 24px;">
                 <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid #FEE2E8;margin-bottom:12px;">
                 <div style="font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:#111827;">{{ $user->name }}</div>
                 <div style="font-size:13px;color:#9CA3AF;margin-bottom:8px;">{{ $user->email }}</div>
-                <span style="background:{{ $user->isAdmin() ? '#FEF3C7' : '#FEE2E8' }};color:{{ $user->isAdmin() ? '#92400E' : '#E31837' }};font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;">
+                <span style="background:{{ $user->isAdmin() ? '#FEF3C7' : '#FEE2E8' }};color:{{ $user->isAdmin() ? '#92400E' : '#d09226' }};font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;">
                     {{ $user->isAdmin() ? 'Administrator' : ($user->plan?->name ?? 'Free Plan') }}
                 </span>
             </div>
@@ -186,8 +186,8 @@
         <!-- Current Plan -->
         <div class="alb-card mb-4">
             <div class="alb-card-header">
-                <h3 class="alb-card-title"><i class="bi bi-credit-card me-2" style="color:#E31837;"></i>Current Plan</h3>
-                <a href="{{ route('billing.plans') }}" style="font-size:13px;color:#E31837;text-decoration:none;font-weight:600;">Change →</a>
+                <h3 class="alb-card-title"><i class="bi bi-credit-card me-2" style="color:#d09226;"></i>Current Plan</h3>
+                <a href="{{ route('billing.plans') }}" style="font-size:13px;color:#d09226;text-decoration:none;font-weight:600;">Change →</a>
             </div>
             @if($user->plan)
             <div style="background:#F9FAFB;border-radius:10px;padding:16px;margin-bottom:12px;">
@@ -210,7 +210,7 @@
                     <div class="usage-bar-fill" style="width:{{ $user->getUsagePercentage() }}%;"></div>
                 </div>
             </div>
-            <a href="{{ route('billing.plans') }}" style="display:block;text-align:center;background:#E31837;color:white;border-radius:9px;padding:11px;font-size:13.5px;font-weight:700;text-decoration:none;transition:background 0.15s;" onmouseover="this.style.background='#b01028'" onmouseout="this.style.background='#E31837'">
+            <a href="{{ route('billing.plans') }}" style="display:block;text-align:center;background:#d09226;color:white;border-radius:9px;padding:11px;font-size:13.5px;font-weight:700;text-decoration:none;transition:background 0.15s;" onmouseover="this.style.background='#b01028'" onmouseout="this.style.background='#d09226'">
                 <i class="bi bi-arrow-up-circle me-2"></i>Upgrade Plan
             </a>
         </div>
@@ -219,7 +219,7 @@
         <div class="alb-card" style="border-color:#FCA5A5;">
             <h3 class="alb-card-title mb-3" style="color:#EF4444;"><i class="bi bi-exclamation-triangle me-2"></i>Danger Zone</h3>
             <p style="font-size:13px;color:#6B7280;margin-bottom:16px;">Once you delete your account, all of your data will be permanently removed. This action cannot be undone.</p>
-            <button type="button" class="btn" style="background:#FEE2E2;color:#EF4444;border:1.5px solid #FCA5A5;font-size:13px;font-weight:700;padding:10px 20px;border-radius:9px;" onclick="if(confirm('Are you absolutely sure? This will permanently delete your account and all data.')) alert('Contact support to delete your account.')">
+            <button type="button" class="btn" style="background:#d09226;color:#EF4444;border:1.5px solid #FCA5A5;font-size:13px;font-weight:700;padding:10px 20px;border-radius:9px;" onclick="if(confirm('Are you absolutely sure? This will permanently delete your account and all data.')) alert('Contact support to delete your account.')">
                 <i class="bi bi-trash me-2"></i>Delete Account
             </button>
         </div>

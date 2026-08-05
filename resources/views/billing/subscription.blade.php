@@ -49,10 +49,10 @@
 
         <!-- Usage this period -->
         <div class="alb-card mb-4">
-            <h3 class="alb-card-title mb-4"><i class="bi bi-activity me-2" style="color:#E31837;"></i>Usage This Period</h3>
+            <h3 class="alb-card-title mb-4"><i class="bi bi-activity me-2" style="color:#d09226;"></i>Usage This Period</h3>
             @php
             $usageItems = [
-                ['Listings Generated', $user->listings_used, $user->plan?->listings_limit ?? 5, '#E31837'],
+                ['Listings Generated', $user->listings_used, $user->plan?->listings_limit ?? 5, '#d09226'],
                 ['AI Generations', $user->ai_generations_used, $user->plan?->ai_generations_limit ?? 5, '#8B5CF6'],
             ];
             @endphp
@@ -90,7 +90,7 @@
                         <option>Other</option>
                     </select>
                 </div>
-                <button type="submit" class="btn" style="background:#FEE2E2;color:#EF4444;border:1.5px solid #FCA5A5;font-size:13.5px;font-weight:700;padding:10px 22px;border-radius:9px;">
+                <button type="submit" class="btn" style="background:#d09226;color:#EF4444;border:1.5px solid #FCA5A5;font-size:13.5px;font-weight:700;padding:10px 22px;border-radius:9px;">
                     <i class="bi bi-x-circle me-2"></i>Cancel Subscription
                 </button>
             </form>
@@ -102,7 +102,7 @@
     <div class="col-lg-5 fade-in-up fade-in-up-delay-1">
         <div class="alb-card">
             <div class="alb-card-header">
-                <h3 class="alb-card-title"><i class="bi bi-receipt me-2" style="color:#E31837;"></i>Payment History</h3>
+                <h3 class="alb-card-title"><i class="bi bi-receipt me-2" style="color:#d09226;"></i>Payment History</h3>
             </div>
             @if($payments->isEmpty())
             <div style="text-align:center;padding:32px;color:#9CA3AF;">
@@ -125,7 +125,7 @@
                         @if($payment->status === 'success')
                         <span style="background:#D1FAE5;color:#065F46;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:20px;">Paid</span>
                         @elseif($payment->status === 'failed')
-                        <span style="background:#FEE2E2;color:#991B1B;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:20px;">Failed</span>
+                        <span style="background:#d09226;color:#b1740a;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:20px;">Failed</span>
                         @else
                         <span style="background:#FEF3C7;color:#92400E;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:20px;">{{ ucfirst($payment->status) }}</span>
                         @endif

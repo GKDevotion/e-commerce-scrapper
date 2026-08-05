@@ -208,13 +208,13 @@ class ExportService
 <meta charset="UTF-8">
 <style>
     body { font-family: Arial, sans-serif; font-size: 12px; color: #333; padding: 20px; }
-    h1 { color: #E31837; font-size: 18px; border-bottom: 2px solid #E31837; padding-bottom: 10px; }
+    h1 { color: #d09226; font-size: 18px; border-bottom: 2px solid #d09226; padding-bottom: 10px; }
     h2 { color: #000; font-size: 14px; margin-top: 20px; }
-    .badge { background: #E31837; color: white; padding: 2px 8px; border-radius: 4px; font-size: 10px; }
+    .badge { background: #d09226; color: white; padding: 2px 8px; border-radius: 4px; font-size: 10px; }
     table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    th { background: #E31837; color: white; padding: 8px; text-align: left; }
+    th { background: #d09226; color: white; padding: 8px; text-align: left; }
     td { padding: 6px 8px; border-bottom: 1px solid #eee; }
-    .title-box { background: #f9f9f9; border-left: 4px solid #E31837; padding: 12px; margin: 10px 0; }
+    .title-box { background: #f9f9f9; border-left: 4px solid #d09226; padding: 12px; margin: 10px 0; }
 </style>
 </head>
 <body>

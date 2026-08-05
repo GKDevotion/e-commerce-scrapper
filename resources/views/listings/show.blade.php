@@ -51,12 +51,12 @@
                 @endphp
 
                 @if($import->status === 'failed')
-                <div style="background:#FEE2E2;border:1px solid #FCA5A5;border-radius:10px;padding:14px 16px;margin-bottom:16px;">
-                    <div style="font-size:13px;font-weight:700;color:#991B1B;margin-bottom:6px;">
+                <div style="background:#d09226;border:1px solid #FCA5A5;border-radius:10px;padding:14px 16px;margin-bottom:16px;">
+                    <div style="font-size:13px;font-weight:700;color:#b1740a;margin-bottom:6px;">
                         <i class="bi bi-x-circle me-1"></i>Import Failed
                     </div>
                     <div style="font-size:12.5px;color:#B91C1C;">{{ $import->scrape_error }}</div>
-                    <a href="{{ route('listings.create') }}" style="display:inline-block;margin-top:10px;font-size:12.5px;color:#E31837;font-weight:700;text-decoration:none;">
+                    <a href="{{ route('listings.create') }}" style="display:inline-block;margin-top:10px;font-size:12.5px;color:#d09226;font-weight:700;text-decoration:none;">
                         Try again →
                     </a>
                 </div>
@@ -70,20 +70,20 @@
                     <div style="display:flex;align-items:flex-start;gap:14px;{{ !$loop->last ? 'padding-bottom:16px;' : '' }}">
                         <div style="display:flex;flex-direction:column;align-items:center;">
                             <div style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;
-                                background:{{ $isDone ? '#E31837' : ($isCurrent ? '#FEE2E8' : '#F3F4F6') }};
-                                color:{{ $isDone ? 'white' : ($isCurrent ? '#E31837' : '#9CA3AF') }};
-                                border:{{ $isCurrent ? '2px solid #E31837' : 'none' }};">
+                                background:{{ $isDone ? '#d09226' : ($isCurrent ? '#FEE2E8' : '#F3F4F6') }};
+                                color:{{ $isDone ? 'white' : ($isCurrent ? '#d09226' : '#9CA3AF') }};
+                                border:{{ $isCurrent ? '2px solid #d09226' : 'none' }};">
                                 @if($isDone)<i class="bi bi-check"></i>@else{{ $si + 1 }}@endif
                             </div>
                             @if(!$loop->last)
-                            <div style="width:2px;flex:1;min-height:12px;background:{{ $isDone ? '#E31837' : '#F3F4F6' }};margin:2px 0;"></div>
+                            <div style="width:2px;flex:1;min-height:12px;background:{{ $isDone ? '#d09226' : '#F3F4F6' }};margin:2px 0;"></div>
                             @endif
                         </div>
                         <div style="padding-top:4px;">
-                            <div style="font-size:13px;font-weight:{{ $isCurrent ? '700' : '500' }};color:{{ $isDone ? '#059669' : ($isCurrent ? '#E31837' : '#9CA3AF') }};">
+                            <div style="font-size:13px;font-weight:{{ $isCurrent ? '700' : '500' }};color:{{ $isDone ? '#059669' : ($isCurrent ? '#d09226' : '#9CA3AF') }};">
                                 {{ $sLabel }}
                                 @if($isCurrent && in_array($currentStatus, ['scraping','processing']))
-                                <span class="spinner-border spinner-border-sm ms-1" style="width:12px;height:12px;border-width:2px;color:#E31837;"></span>
+                                <span class="spinner-border spinner-border-sm ms-1" style="width:12px;height:12px;border-width:2px;color:#d09226;"></span>
                                 @endif
                             </div>
                         </div>
@@ -97,7 +97,7 @@
         <!-- Original Product Info (once scraped) -->
         @if($import->original_title)
         <div class="alb-card fade-in-up">
-            <h3 class="alb-card-title mb-3"><i class="bi bi-box me-2" style="color:#E31837;"></i>Scraped Data</h3>
+            <h3 class="alb-card-title mb-3"><i class="bi bi-box me-2" style="color:#d09226;"></i>Scraped Data</h3>
             <div style="display:flex;flex-direction:column;gap:12px;">
                 <div>
                     <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#9CA3AF;letter-spacing:0.05em;margin-bottom:4px;">Title</div>
@@ -114,7 +114,7 @@
                     <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#9CA3AF;letter-spacing:0.05em;margin-bottom:6px;">Bullet Points</div>
                     @foreach($import->original_bullet_points as $bullet)
                     <div style="font-size:12.5px;color:#374151;display:flex;gap:8px;margin-bottom:5px;">
-                        <span style="color:#E31837;flex-shrink:0;">•</span>
+                        <span style="color:#d09226;flex-shrink:0;">•</span>
                         <span>{{ Str::limit($bullet, 120) }}</span>
                     </div>
                     @endforeach
@@ -200,21 +200,21 @@
         @elseif($latestGeneration && $latestGeneration->status === 'generating')
         <!-- Generating -->
         <div class="alb-card mb-4 fade-in-up" style="text-align:center;padding:48px 24px;" id="generatingCard">
-            <div style="width:72px;height:72px;border-radius:50%;background:#FEE2E8;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:32px;color:#E31837;">
+            <div style="width:72px;height:72px;border-radius:50%;background:#FEE2E8;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:32px;color:#d09226;">
                 <i class="bi bi-cpu spin"></i>
             </div>
             <div style="font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:#111827;margin-bottom:8px;">AI Is Writing Your Listing</div>
             <div style="font-size:14px;color:#6B7280;max-width:320px;margin:0 auto 24px;line-height:1.6;">
                 GPT-4o is generating your unique product title, bullet points, description, and SEO keywords...
             </div>
-            <div id="loadingMessages" style="font-size:13px;color:#E31837;font-weight:600;min-height:24px;"></div>
+            <div id="loadingMessages" style="font-size:13px;color:#d09226;font-weight:600;min-height:24px;"></div>
         </div>
 
         @elseif($latestGeneration && $latestGeneration->status === 'failed')
         <!-- Failed -->
         <div class="alb-card mb-4 fade-in-up" style="border:1.5px solid #FCA5A5;">
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-                <div style="width:44px;height:44px;background:#FEE2E2;border-radius:12px;display:flex;align-items:center;justify-content:center;">
+                <div style="width:44px;height:44px;background:#d09226;border-radius:12px;display:flex;align-items:center;justify-content:center;">
                     <i class="bi bi-x-circle-fill" style="color:#EF4444;font-size:22px;"></i>
                 </div>
                 <div>
@@ -233,7 +233,7 @@
         @else
         <!-- Ready to Generate — choose AI or Manual -->
         <div class="alb-card mb-4 fade-in-up" style="text-align:center;padding:40px 24px;">
-            <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#FEE2E8,#FFE4E6);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:36px;color:#E31837;">
+            <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#FEE2E8,#FFE4E6);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:36px;color:#d09226;">
                 <i class="bi bi-stars"></i>
             </div>
             <h3 style="font-family:'Sora',sans-serif;font-size:20px;font-weight:700;margin-bottom:10px;">Ready to Build Your Listing!</h3>
@@ -245,7 +245,7 @@
                 <div class="col-sm-6">
                     <form method="POST" action="{{ route('generations.generate', $import->id) }}" id="aiGenerateForm">
                         @csrf
-                        <button type="submit" class="btn w-100" id="generateBtn" style="background:#E31837;color:white;border:none;border-radius:12px;padding:20px 16px;text-align:left;transition:all 0.15s;height:100%;">
+                        <button type="submit" class="btn w-100" id="generateBtn" style="background:#d09226;color:white;border:none;border-radius:12px;padding:20px 16px;text-align:left;transition:all 0.15s;height:100%;">
                             <i class="bi bi-cpu" style="font-size:24px;display:block;margin-bottom:10px;" id="genBtnIcon"></i>
                             <span id="genBtnText">
                                 <span style="font-family:'Sora',sans-serif;font-size:15px;font-weight:700;display:block;margin-bottom:4px;">Generate with AI</span>
@@ -260,7 +260,7 @@
                 </div>
 
                 <div class="col-sm-6">
-                    <a href="{{ route('generations.manual.create', $import->id) }}" class="btn w-100 text-decoration-none" style="background:white;color:#374151;border:1.5px solid #E5E7EB;border-radius:12px;padding:20px 16px;text-align:left;transition:all 0.15s;height:100%;display:block;" onmouseover="this.style.borderColor='#E31837';this.style.color='#E31837'" onmouseout="this.style.borderColor='#E5E7EB';this.style.color='#374151'">
+                    <a href="{{ route('generations.manual.create', $import->id) }}" class="btn w-100 text-decoration-none" style="background:white;color:#374151;border:1.5px solid #E5E7EB;border-radius:12px;padding:20px 16px;text-align:left;transition:all 0.15s;height:100%;display:block;" onmouseover="this.style.borderColor='#d09226';this.style.color='#d09226'" onmouseout="this.style.borderColor='#E5E7EB';this.style.color='#374151'">
                         <i class="bi bi-pencil-square" style="font-size:24px;display:block;margin-bottom:10px;"></i>
                         <span style="font-family:'Sora',sans-serif;font-size:15px;font-weight:700;display:block;margin-bottom:4px;">Create Manually</span>
                         <span style="font-size:12px;opacity:0.75;">Edit the scraped content yourself — no AI required</span>
@@ -286,7 +286,7 @@
             <p style="font-size:14px;color:#6B7280;max-width:300px;margin:0 auto 24px;line-height:1.6;">
                 We're extracting product data from Amazon. This usually takes 10–30 seconds.
             </p>
-            <div id="scrapeDots" style="font-size:24px;color:#E31837;letter-spacing:6px;">•••</div>
+            <div id="scrapeDots" style="font-size:24px;color:#d09226;letter-spacing:6px;">•••</div>
         </div>
         @endif
     </div>

@@ -6,7 +6,7 @@ $isGenerated = ($type ?? 'original') === 'generated';
     <!-- Title -->
     <div class="listing-field" onclick="copyField(this)" title="Click to copy">
         <div class="field-label">
-            <i class="bi bi-type" style="color:{{ $isGenerated ? '#E31837' : '#9CA3AF' }};"></i>
+            <i class="bi bi-type" style="color:{{ $isGenerated ? '#d09226' : '#9CA3AF' }};"></i>
             Product Title
             <i class="bi bi-copy ms-auto" style="color:#CBD5E1;font-size:11px;"></i>
         </div>
@@ -34,13 +34,13 @@ $isGenerated = ($type ?? 'original') === 'generated';
     <!-- Bullet Points -->
     <div style="margin-bottom:16px;">
         <div class="field-label" style="padding:0 12px;">
-            <i class="bi bi-list-ul" style="color:{{ $isGenerated ? '#E31837' : '#9CA3AF' }};"></i>
+            <i class="bi bi-list-ul" style="color:{{ $isGenerated ? '#d09226' : '#9CA3AF' }};"></i>
             Bullet Points
         </div>
         @if(!empty($bullets))
             @foreach($bullets as $i => $bullet)
             <div class="listing-field" style="display:flex;gap:10px;align-items:flex-start;margin-bottom:6px;" onclick="copyField(this)">
-                <span style="min-width:20px;height:20px;border-radius:50%;background:{{ $isGenerated ? '#E31837' : '#9CA3AF' }};color:white;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">{{ $i+1 }}</span>
+                <span style="min-width:20px;height:20px;border-radius:50%;background:{{ $isGenerated ? '#d09226' : '#9CA3AF' }};color:white;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">{{ $i+1 }}</span>
                 <div class="field-value">{{ $bullet }}</div>
             </div>
             @endforeach
@@ -52,7 +52,7 @@ $isGenerated = ($type ?? 'original') === 'generated';
     <!-- Description -->
     <div class="listing-field" onclick="copyField(this)" title="Click to copy">
         <div class="field-label">
-            <i class="bi bi-text-paragraph" style="color:{{ $isGenerated ? '#E31837' : '#9CA3AF' }};"></i>
+            <i class="bi bi-text-paragraph" style="color:{{ $isGenerated ? '#d09226' : '#9CA3AF' }};"></i>
             Product Description
             <i class="bi bi-copy ms-auto" style="color:#CBD5E1;font-size:11px;"></i>
         </div>

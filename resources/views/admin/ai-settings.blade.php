@@ -8,7 +8,7 @@
     <div class="col-lg-6 fade-in-up">
         <div class="alb-card">
             <div class="alb-card-header">
-                <h3 class="alb-card-title"><i class="bi bi-cpu me-2" style="color:#E31837;"></i>OpenAI Configuration</h3>
+                <h3 class="alb-card-title"><i class="bi bi-cpu me-2" style="color:#d09226;"></i>OpenAI Configuration</h3>
             </div>
             <form method="POST" action="{{ route('admin.ai-settings.update') }}">
                 @csrf
@@ -99,7 +99,7 @@
             <div class="row g-3">
                 @php
                 $aiStats = [
-                    ['Total Generations', \App\Models\AiGeneration::count(), 'bi-cpu', '#E31837'],
+                    ['Total Generations', \App\Models\AiGeneration::count(), 'bi-cpu', '#d09226'],
                     ['Completed', \App\Models\AiGeneration::where('status','completed')->count(), 'bi-check-circle', '#10B981'],
                     ['Failed', \App\Models\AiGeneration::where('status','failed')->count(), 'bi-x-circle', '#EF4444'],
                     ['Total Tokens', number_format(\App\Models\AiGeneration::sum('total_tokens')), 'bi-hash', '#8B5CF6'],

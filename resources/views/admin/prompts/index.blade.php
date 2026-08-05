@@ -8,14 +8,14 @@
 <div class="row g-4 fade-in-up">
   @forelse($templates as $tpl)
   <div class="col-lg-6">
-    <div class="alb-card" style="border:{{ $tpl->is_default?'2px solid #E31837':'1.5px solid #E5E7EB' }};">
+    <div class="alb-card" style="border:{{ $tpl->is_default?'2px solid #d09226':'1.5px solid #E5E7EB' }};">
       <div class="d-flex align-items-start justify-content-between mb-3">
         <div>
           <div style="font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:#111827;margin-bottom:4px;">{{ $tpl->name }}</div>
           <div style="font-size:12.5px;color:#9CA3AF;">{{ $tpl->description }}</div>
         </div>
         <div class="d-flex gap-2 flex-shrink-0">
-          @if($tpl->is_default)<span style="background:#FEE2E8;color:#E31837;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;">Default</span>@endif
+          @if($tpl->is_default)<span style="background:#FEE2E8;color:#d09226;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;">Default</span>@endif
           @if($tpl->is_active)<span style="background:#D1FAE5;color:#065F46;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;">Active</span>
           @else<span style="background:#F3F4F6;color:#9CA3AF;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;">Inactive</span>@endif
         </div>
@@ -46,7 +46,7 @@
   <div class="col-12">
     <div class="alb-card text-center" style="padding:40px;">
       <i class="bi bi-file-text" style="font-size:32px;color:#D1D5DB;display:block;margin-bottom:10px;"></i>
-      <p style="color:#9CA3AF;">No templates yet. <a href="{{ route('admin.prompts.create') }}" style="color:#E31837;">Create one →</a></p>
+      <p style="color:#9CA3AF;">No templates yet. <a href="{{ route('admin.prompts.create') }}" style="color:#d09226;">Create one →</a></p>
     </div>
   </div>
   @endforelse

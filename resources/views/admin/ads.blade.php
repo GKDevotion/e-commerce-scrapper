@@ -41,7 +41,7 @@
                         </div>
                         <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#374151;">
                             <input type="checkbox" name="is_enabled" value="1" {{ $ad->is_enabled ? 'checked' : '' }}
-                                style="width:16px;height:16px;accent-color:#E31837;">
+                                style="width:16px;height:16px;accent-color:#d09226;">
                             Enabled
                         </label>
                     </div>

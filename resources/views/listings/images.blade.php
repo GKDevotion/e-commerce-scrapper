@@ -110,9 +110,9 @@
                     <!-- Download individual -->
                     <a href="{{ route('export.images.single', [$generation->id, $i]) }}"
                         title="Download {{ $filename }}"
-                        style="width:30px;height:30px;background:#E31837;border-radius:7px;display:flex;align-items:center;justify-content:center;color:white;text-decoration:none;font-size:13px;transition:background 0.15s;"
+                        style="width:30px;height:30px;background:#d09226;border-radius:7px;display:flex;align-items:center;justify-content:center;color:white;text-decoration:none;font-size:13px;transition:background 0.15s;"
                         onmouseover="this.style.background='#b01028'"
-                        onmouseout="this.style.background='#E31837'">
+                        onmouseout="this.style.background='#d09226'">
                         <i class="bi bi-download"></i>
                     </a>
                 </div>
@@ -142,7 +142,7 @@
 @if(!empty($images))
 <div id="lightbox" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:9999;align-items:center;justify-content:center;flex-direction:column;">
     <div style="position:absolute;top:16px;right:16px;display:flex;gap:10px;z-index:2;">
-        <a id="lightboxDownload" href="#" class="btn" style="background:#E31837;color:white;border-radius:9px;padding:8px 18px;font-size:13.5px;font-weight:700;text-decoration:none;">
+        <a id="lightboxDownload" href="#" class="btn" style="background:#d09226;color:white;border-radius:9px;padding:8px 18px;font-size:13.5px;font-weight:700;text-decoration:none;">
             <i class="bi bi-download me-1"></i>Download
         </a>
         <button onclick="closeLightbox()" style="background:rgba(255,255,255,0.15);border:none;color:white;border-radius:9px;padding:8px 14px;font-size:18px;cursor:pointer;">

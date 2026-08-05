@@ -12,9 +12,9 @@
 <div class="row g-4">
     @foreach($plans as $plan)
     <div class="col-md-6 col-lg-3 fade-in-up">
-        <div class="alb-card h-100" style="border:{{ $plan->is_featured ? '2px solid #E31837' : '1.5px solid #E5E7EB' }};">
+        <div class="alb-card h-100" style="border:{{ $plan->is_featured ? '2px solid #d09226' : '1.5px solid #E5E7EB' }};">
             @if($plan->is_featured)
-            <div style="background:#E31837;color:white;text-align:center;font-size:10.5px;font-weight:800;padding:5px;border-radius:8px 8px 0 0;margin:-24px -24px 16px;">FEATURED</div>
+            <div style="background:#d09226;color:white;text-align:center;font-size:10.5px;font-weight:800;padding:5px;border-radius:8px 8px 0 0;margin:-24px -24px 16px;">FEATURED</div>
             @endif
             <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
                 <div>

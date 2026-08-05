@@ -17,7 +17,7 @@ $user = auth()->user();
         <div style="font-size:14px;font-weight:700;color:#92400E;margin-bottom:4px;">No OpenAI API Key Configured</div>
         <div style="font-size:13px;color:#92400E;line-height:1.6;">
             You haven't added your OpenAI API key. AI generation will be unavailable — you can still create listings manually.
-            <a href="{{ route('profile.index') }}" style="color:#E31837;font-weight:700;text-decoration:underline;">Add API key in Settings →</a>
+            <a href="{{ route('profile.index') }}" style="color:#d09226;font-weight:700;text-decoration:underline;">Add API key in Settings →</a>
         </div>
     </div>
 </div>
@@ -74,7 +74,7 @@ $user = auth()->user();
 
                 {{-- URL --}}
                 <div class="alb-form-group">
-                    <label class="alb-label"><i class="bi bi-link-45deg me-1" style="color:#E31837;"></i>Product URL <span style="color:#E31837;">*</span></label>
+                    <label class="alb-label"><i class="bi bi-link-45deg me-1" style="color:#d09226;"></i>Product URL <span style="color:#d09226;">*</span></label>
                     <div style="position:relative;">
                         <input type="url" name="product_url" id="productUrlInput"
                             class="alb-input @error('product_url') is-invalid @enderror"
@@ -94,7 +94,7 @@ $user = auth()->user();
                 <div class="row g-3">
                     <div class="col-md-6">
                         <div class="alb-form-group">
-                            <label class="alb-label"><i class="bi bi-tag me-1" style="color:#E31837;"></i>Your Brand Name <span style="color:#E31837;">*</span></label>
+                            <label class="alb-label"><i class="bi bi-tag me-1" style="color:#d09226;"></i>Your Brand Name <span style="color:#d09226;">*</span></label>
                             <input type="text" name="target_brand_name"
                                 class="alb-input @error('target_brand_name') is-invalid @enderror"
                                 placeholder="e.g. PrimeCraft"
@@ -107,7 +107,7 @@ $user = auth()->user();
                     </div>
                     <div class="col-md-6">
                         <div class="alb-form-group">
-                            <label class="alb-label"><i class="bi bi-building me-1" style="color:#E31837;"></i>Manufacturer Name <span style="color:#E31837;">*</span></label>
+                            <label class="alb-label"><i class="bi bi-building me-1" style="color:#d09226;"></i>Manufacturer Name <span style="color:#d09226;">*</span></label>
                             <input type="text" name="target_manufacturer"
                                 class="alb-input @error('target_manufacturer') is-invalid @enderror"
                                 placeholder="e.g. PrimeCraft Industries"
@@ -122,7 +122,7 @@ $user = auth()->user();
 
                 {{-- Keywords --}}
                 <div class="alb-form-group">
-                    <label class="alb-label"><i class="bi bi-search me-1" style="color:#E31837;"></i>Target Keywords <span style="color:#9CA3AF;font-weight:400;">(Optional)</span></label>
+                    <label class="alb-label"><i class="bi bi-search me-1" style="color:#d09226;"></i>Target Keywords <span style="color:#9CA3AF;font-weight:400;">(Optional)</span></label>
                     <textarea name="target_keywords" class="alb-input alb-textarea"
                         placeholder="e.g. stainless steel water bottle, BPA free, insulated, 32oz..."
                         maxlength="500">{{ old('target_keywords') }}</textarea>

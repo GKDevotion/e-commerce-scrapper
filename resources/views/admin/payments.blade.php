@@ -49,7 +49,7 @@
       <tbody>
         @forelse($payments as $payment)
         @php
-          $statusColors = ['success'=>['#D1FAE5','#065F46'],'failed'=>['#FEE2E2','#991B1B'],'pending'=>['#FEF3C7','#92400E'],'refunded'=>['#EDE9FE','#5B21B6']];
+          $statusColors = ['success'=>['#D1FAE5','#065F46'],'failed'=>['#d09226','#b1740a'],'pending'=>['#FEF3C7','#92400E'],'refunded'=>['#EDE9FE','#5B21B6']];
           $sc = $statusColors[$payment->status] ?? ['#F3F4F6','#6B7280'];
         @endphp
         <tr>

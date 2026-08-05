@@ -32,13 +32,13 @@
                 <i class="bi bi-pencil me-1"></i>Manual
             </span>
             @else
-            <span style="background:#FEE2E8;color:#E31837;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap;">
+            <span style="background:#FEE2E8;color:#d09226;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap;">
                 <i class="bi bi-stars me-1"></i>AI Generated
             </span>
             @endif
         </h2>
         <div style="font-size:12px;color:#9CA3AF;margin-top:4px;">
-            Brand: <strong style="color:#E31837;">{{ $generation->brand_name }}</strong> •
+            Brand: <strong style="color:#d09226;">{{ $generation->brand_name }}</strong> •
             {{ $generation->isManual() ? 'Created' : 'Generated' }} {{ $generation->generated_at?->diffForHumans() }}
             @if($generation->isAi() && $generation->total_tokens)
             • {{ number_format($generation->total_tokens) }} tokens
@@ -84,7 +84,7 @@
 <div class="alb-card mb-4 fade-in-up fade-in-up-delay-1" style="padding:12px 16px;">
     <div class="d-flex align-items-center gap-2 flex-wrap">
         <span style="font-size:13px;font-weight:600;color:#374151;">View:</span>
-        <button onclick="setView('split')" id="btn-split" class="btn btn-sm" style="font-size:12.5px;font-weight:600;border-radius:6px;padding:5px 14px;background:#E31837;color:white;border:none;">
+        <button onclick="setView('split')" id="btn-split" class="btn btn-sm" style="font-size:12.5px;font-weight:600;border-radius:6px;padding:5px 14px;background:#d09226;color:white;border:none;">
             Side-by-Side
         </button>
         <button onclick="setView('generated')" id="btn-generated" class="btn btn-sm" style="font-size:12.5px;font-weight:600;border-radius:6px;padding:5px 14px;background:#F3F4F6;color:#374151;border:none;">
@@ -130,8 +130,8 @@
 
     <!-- Generated Column -->
     <div id="generatedCol" class="col-md-6" style="padding-left:2px;">
-        <div style="background:white;border:1.5px solid #E31837;border-radius:0 14px 14px 0;height:100%;padding:0;">
-            <div style="background:linear-gradient(135deg,#E31837,#b01028);color:white;padding:14px 20px;border-radius:0 12px 0 0;display:flex;align-items:center;gap:8px;">
+        <div style="background:white;border:1.5px solid #d09226;border-radius:0 14px 14px 0;height:100%;padding:0;">
+            <div style="background:linear-gradient(135deg,#d09226,#b01028);color:white;padding:14px 20px;border-radius:0 12px 0 0;display:flex;align-items:center;gap:8px;">
                 <i class="bi bi-stars" style="font-size:16px;"></i>
                 <span style="font-size:13px;font-weight:700;">AI Generated Listing</span>
                 <span style="background:rgba(255,255,255,0.2);font-size:11px;padding:2px 8px;border-radius:20px;margin-left:auto;">{{ $generation->brand_name }}</span>
@@ -211,7 +211,7 @@
 <!-- Export Panel -->
 <div class="alb-card mt-4 fade-in-up" id="exportPanel">
     <div class="alb-card-header">
-        <h3 class="alb-card-title"><i class="bi bi-download me-2" style="color:#E31837;"></i>Export Listing</h3>
+        <h3 class="alb-card-title"><i class="bi bi-download me-2" style="color:#d09226;"></i>Export Listing</h3>
     </div>
     <p style="font-size:14px;color:#6B7280;margin-bottom:20px;">Download your generated listing in your preferred format.</p>
     <div class="row g-3">
@@ -336,21 +336,21 @@ function setView(mode) {
         gen.className = 'col-md-6';
         orig.querySelector('div').style.borderRadius = '14px 0 0 14px';
         gen.querySelector('div').style.borderRadius = '0 14px 14px 0';
-        btnSplit.style.background = '#E31837';
+        btnSplit.style.background = '#d09226';
         btnSplit.style.color = 'white';
     } else if (mode === 'generated') {
         orig.style.display = 'none';
         gen.style.display = '';
         gen.className = 'col-12';
         gen.querySelector('div').style.borderRadius = '14px';
-        btnGen.style.background = '#E31837';
+        btnGen.style.background = '#d09226';
         btnGen.style.color = 'white';
     } else {
         gen.style.display = 'none';
         orig.style.display = '';
         orig.className = 'col-12';
         orig.querySelector('div').style.borderRadius = '14px';
-        btnOrig.style.background = '#E31837';
+        btnOrig.style.background = '#d09226';
         btnOrig.style.color = 'white';
     }
 }

@@ -9,7 +9,7 @@
     <div class="col-lg-6 fade-in-up">
         <div class="alb-card">
             <div class="alb-card-header">
-                <h3 class="alb-card-title"><i class="bi bi-cloud me-2" style="color:#E31837;"></i>API Usage by Service</h3>
+                <h3 class="alb-card-title"><i class="bi bi-cloud me-2" style="color:#d09226;"></i>API Usage by Service</h3>
             </div>
             @if($apiLogs->isEmpty())
             <div style="text-align:center;padding:32px;color:#9CA3AF;font-size:13px;">No API logs yet.</div>
@@ -39,7 +39,7 @@
                             @elseif($log->avg_time < 3000)
                             <span style="background:#FEF3C7;color:#92400E;font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;">OK</span>
                             @else
-                            <span style="background:#FEE2E2;color:#991B1B;font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;">Slow</span>
+                            <span style="background:#d09226;color:#b1740a;font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;">Slow</span>
                             @endif
                         </td>
                     </tr>
@@ -86,7 +86,7 @@
                             <div style="font-size:11.5px;color:#9CA3AF;">{{ $topUser->plan?->name ?? 'Free' }}</div>
                         </div>
                         <div style="text-align:right;flex-shrink:0;">
-                            <div style="font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:#E31837;">{{ $topUser->ai_generations_count }}</div>
+                            <div style="font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:#d09226;">{{ $topUser->ai_generations_count }}</div>
                             <div style="font-size:11px;color:#9CA3AF;">gens</div>
                         </div>
                     </div>
@@ -116,7 +116,7 @@ new Chart(document.getElementById('revenueChart'), {
             label: 'Revenue ($)',
             data: values.length ? values : [0],
             backgroundColor: 'rgba(227,24,55,0.7)',
-            borderColor: '#E31837',
+            borderColor: '#d09226',
             borderWidth: 1,
             borderRadius: 6,
         }]

@@ -6,12 +6,12 @@
   <div class="col-lg-5 col-md-7">
     <div class="alb-card fade-in-up">
       <div style="text-align:center;padding:20px 0 24px;border-bottom:1px solid #F3F4F6;margin-bottom:24px;">
-        <div style="width:60px;height:60px;background:#FEE2E8;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:26px;color:#E31837;">
+        <div style="width:60px;height:60px;background:#FEE2E8;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:26px;color:#d09226;">
           <i class="bi bi-credit-card"></i>
         </div>
         <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:#111827;margin-bottom:4px;">{{ $plan->name }} Plan</div>
         <div style="font-size:13px;color:#6B7280;margin-bottom:12px;">{{ ucfirst($billingCycle) }} subscription</div>
-        <div style="font-family:'Sora',sans-serif;font-size:34px;font-weight:900;color:#E31837;">
+        <div style="font-family:'Sora',sans-serif;font-size:34px;font-weight:900;color:#d09226;">
           ₹{{ number_format($amount,0) }}<span style="font-size:15px;font-weight:400;color:#9CA3AF;">/{{ $billingCycle==='yearly'?'year':'month' }}</span>
         </div>
       </div>
@@ -58,7 +58,7 @@ var rzp = new Razorpay({
   description: "{{ $plan->name }} Plan — {{ ucfirst($billingCycle) }}",
   prefill: { name: "{{ $user->name }}", email: "{{ $user->email }}", contact: "{{ $user->phone ?? '' }}" },
   notes: { user_id: "{{ $user->id }}", plan_id: "{{ $plan->id }}", subscription_id: "{{ $subscription->id }}" },
-  theme: { color: "#E31837" },
+  theme: { color: "#d09226" },
   handler: function(r) {
     document.getElementById('rzp_pid').value = r.razorpay_payment_id;
     document.getElementById('rzp_oid').value = r.razorpay_order_id || '';

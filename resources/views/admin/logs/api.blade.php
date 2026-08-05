@@ -34,7 +34,7 @@
           </td>
           <td>
             @php $code = $log->status_code ?? 0; @endphp
-            <span style="background:{{ $code < 400 ? '#D1FAE5' : '#FEE2E2' }};color:{{ $code < 400 ? '#065F46' : '#991B1B' }};font-size:12px;font-weight:700;padding:3px 8px;border-radius:6px;">{{ $code ?: '—' }}</span>
+            <span style="background:{{ $code < 400 ? '#D1FAE5' : '#d09226' }};color:{{ $code < 400 ? '#065F46' : '#b1740a' }};font-size:12px;font-weight:700;padding:3px 8px;border-radius:6px;">{{ $code ?: '—' }}</span>
           </td>
           <td style="font-size:12px;color:#6B7280;">{{ $log->response_time_ms ? $log->response_time_ms.'ms' : '—' }}</td>
           <td>

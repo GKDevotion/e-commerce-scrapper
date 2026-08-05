@@ -63,7 +63,7 @@
             <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:#F9FAFB;border-radius:10px;cursor:pointer;border:1.5px solid #E5E7EB;">
               <input type="checkbox" name="{{ $f }}" value="1"
                 {{ old($f,$template?->$f??($f==='is_active')) ? 'checked' : '' }}
-                style="width:18px;height:18px;accent-color:#E31837;flex-shrink:0;">
+                style="width:18px;height:18px;accent-color:#d09226;flex-shrink:0;">
               <div>
                 <div style="font-size:13.5px;font-weight:600;color:#111827;">{{ $l }}</div>
                 <div style="font-size:12px;color:#9CA3AF;">{{ $d }}</div>
