@@ -445,7 +445,7 @@
         <a href="{{ route('admin.ads') }}" class="alb-nav-item {{ request()->routeIs('admin.ads*') ? 'active' : '' }}">
             <i class="bi bi-megaphone-fill"></i> Advertisements
         </a>
-        <a href="{{ route('admin.analytics.settings') }}" class="alb-nav-item {{ request()->routeIs('admin.analytics.settings*') ? 'active' : '' }}">
+        <a href="{{ route('admin.tracking') }}" class="alb-nav-item {{ request()->routeIs('admin.tracking*') ? 'active' : '' }}">
             <i class="bi bi-graph-up-arrow"></i> Analytics & Tracking
         </a>
         <a href="{{ route('admin.payments') }}" class="alb-nav-item {{ request()->routeIs('admin.payments') ? 'active' : '' }}">

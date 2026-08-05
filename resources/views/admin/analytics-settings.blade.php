@@ -28,7 +28,7 @@ $providerMeta = [
 @php $meta = $providerMeta[$item->provider] ?? ['icon'=>'📌','color'=>'#374151','bg'=>'#F9FAFB','placeholder'=>'Tracking ID','hint'=>'']; @endphp
 <div class="col-12">
     <div class="alb-card fade-in-up" style="border-left:4px solid {{ $item->is_enabled ? $meta['color'] : '#E5E7EB' }};padding:0;overflow:hidden;">
-        <form method="POST" action="{{ route('admin.analytics.settings.update', $item->id) }}">
+        <form method="POST" action="{{ route('admin.tracking.update', $item->id) }}">
             @csrf
 
             {{-- Header --}}
