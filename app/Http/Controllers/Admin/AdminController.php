@@ -3,15 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdSetting;
 use App\Models\AiGeneration;
+use App\Models\AnalyticsSetting;
 use App\Models\ApiLog;
+use App\Models\AuditLog;
 use App\Models\Payment;
 use App\Models\Plan;
+use App\Models\PlatformSetting;
 use App\Models\ProductImport;
 use App\Models\PromptTemplate;
 use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
@@ -133,7 +138,7 @@ class AdminController extends Controller
     // Plans Management
     public function plans()
     {
-        $plans = Plan::withCount('users')->orderBy('sort_order')->get();
+        $plans = Plan::with('users')->orderBy('sort_order')->get();
         return view('admin.plans.index', compact('plans'));
     }
 
@@ -220,7 +225,7 @@ class AdminController extends Controller
             ->groupBy('service')
             ->get();
 
-        $topUsers = User::with('plan:id,name')
+            $topUsers = User::with('plan:id,name')
             ->withCount(['aiGenerations' => fn($q) => $q->where('status', 'completed')])
             ->orderByDesc('ai_generations_count')
             ->take(10)
@@ -248,7 +253,7 @@ class AdminController extends Controller
 
     public function auditLogs(Request $request)
     {
-        $query = \App\Models\AuditLog::with('user')->latest();
+        $query = AuditLog::with('user')->latest();
         if ($request->user_id) $query->where('user_id', $request->user_id);
         if ($request->action)  $query->where('action', 'like', '%'.$request->action.'%');
         $logs = $query->paginate(30)->withQueryString();
@@ -268,7 +273,7 @@ class AdminController extends Controller
 
     public function promptTemplates()
     {
-        $templates = \App\Models\PromptTemplate::orderByDesc('is_default')->orderBy('name')->get();
+        $templates = PromptTemplate::orderByDesc('is_default')->orderBy('name')->get();
         return view('admin.prompts.index', compact('templates'));
     }
 
@@ -291,17 +296,18 @@ class AdminController extends Controller
         ]);
         $v['is_active']  = $request->boolean('is_active');
         $v['is_default'] = $request->boolean('is_default');
-        if ($v['is_default']) \App\Models\PromptTemplate::where('is_default', true)->update(['is_default' => false]);
-        \App\Models\PromptTemplate::create($v);
+        if ($v['is_default']) PromptTemplate::where('is_default', true)->update(['is_default' => false]);
+        
+        PromptTemplate::create($v);
         return redirect()->route('admin.prompts')->with('success', 'Template created.');
     }
 
-    public function editPromptTemplate(\App\Models\PromptTemplate $template)
+    public function editPromptTemplate(PromptTemplate $template)
     {
         return view('admin.prompts.edit', compact('template'));
     }
 
-    public function updatePromptTemplate(Request $request, \App\Models\PromptTemplate $template)
+    public function updatePromptTemplate(Request $request, PromptTemplate $template)
     {
         $v = $request->validate([
             'name' => 'required|string|max:100',
@@ -314,12 +320,12 @@ class AdminController extends Controller
         ]);
         $v['is_active']  = $request->boolean('is_active');
         $v['is_default'] = $request->boolean('is_default');
-        if ($v['is_default']) \App\Models\PromptTemplate::where('id','!=',$template->id)->update(['is_default'=>false]);
+        if ($v['is_default']) PromptTemplate::where('id','!=',$template->id)->update(['is_default'=>false]);
         $template->update($v);
         return redirect()->route('admin.prompts')->with('success', 'Template updated.');
     }
 
-    public function destroyPromptTemplate(\App\Models\PromptTemplate $template)
+    public function destroyPromptTemplate(PromptTemplate $template)
     {
         if ($template->is_default) return back()->with('error', 'Cannot delete default template.');
         $template->delete();
@@ -331,14 +337,15 @@ class AdminController extends Controller
 
     public function platforms()
     {
-        $platforms = \App\Models\PlatformSetting::query()->orderBy('sort_order')->get();
+        $platforms = PlatformSetting::query()->orderBy('sort_order')->get();
         return view('admin.platforms', compact('platforms'));
     }
 
-    public function updatePlatform(Request $request, \App\Models\PlatformSetting $platform)
+    public function updatePlatform(Request $request, PlatformSetting $platform)
     {
         $platform->update(['is_enabled' => $request->boolean('is_enabled')]);
-        \Illuminate\Support\Facades\Cache::forget('enabled_platforms');
+        
+        Cache::forget('enabled_platforms');
         return back()->with('success', "Platform {$platform->label} updated.");
     }
 
@@ -346,39 +353,36 @@ class AdminController extends Controller
 
     public function adSettings()
     {
-        $ads = \App\Models\AdSetting::query()->orderBy('provider')->orderBy('placement')->get();
+        $ads = AdSetting::query()->orderBy('provider')->orderBy('placement')->get();
         return view('admin.ads', compact('ads'));
     }
 
-    public function updateAd(Request $request, \App\Models\AdSetting $ad)
+    public function updateAd(Request $request, AdSetting $ad)
     {
         $ad->update([
             'is_enabled' => $request->boolean('is_enabled'),
             'ad_code'    => $request->input('ad_code'),
         ]);
-        \Illuminate\Support\Facades\Cache::flush();
+        
+        Cache::flush();
         return back()->with('success', "Ad slot {$ad->label} updated.");
     }
 
-
     // ── Analytics Settings ────────────────────────────────────────────────────
-
-    public function analyticsSettings()
-    {
-        $analytics = \App\Models\AnalyticsSetting::query()->orderBy('sort_order')->get();
+    public function analyticsSettings(){
+        $analytics = AnalyticsSetting::query()->orderBy('sort_order')->get();
         return view('admin.analytics-settings', compact('analytics'));
     }
 
-    public function updateAnalytics(Request $request, \App\Models\AnalyticsSetting $analytics)
-    {
+    public function updateAnalytics(Request $request, AnalyticsSetting $analytics){
         $analytics->update([
             'is_enabled'   => $request->boolean('is_enabled'),
             'tracking_id'  => $request->input('tracking_id'),
             'head_code'    => $request->input('head_code'),
             'body_code'    => $request->input('body_code'),
         ]);
-        \Illuminate\Support\Facades\Cache::forget('analytics_enabled');
+
+        Cache::forget('analytics_enabled');
         return back()->with('success', "Analytics setting {$analytics->label} updated.");
     }
-
 }

@@ -3,13 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Amazon Listing Builder — AI-Powered Listing Generator for Sellers</title>
+    <title>Seller Forge — AI-Powered Listing Generator for Sellers</title>
     <meta name="description" content="Import any Amazon product URL and generate unique, branded AI listings in seconds. Powered by GPT-4o.">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root { --red: #E31837; --red-dark: #b01028; --black: #0a0a0a; }
+        :root { --red: #d09226; --red-dark: #b07a1e; --black: #0a0a0a; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: white; overflow-x: hidden; }
 
@@ -330,7 +330,7 @@
         <div class="row g-4 mt-5 text-start">
             @php
             $features = [
-                ['bi-robot', '#E31837', '#3D0012', 'AI-Powered Generation', 'GPT-4o generates completely unique titles, bullet points, descriptions, search terms, and A+ content.'],
+                ['bi-robot', '#d09226', '#3D0012', 'AI-Powered Generation', 'GPT-4o generates completely unique titles, bullet points, descriptions, search terms, and A+ content.'],
                 ['bi-shield-check', '#10B981', '#022C22', 'Copyright-Safe', 'Our AI rewrites all content from scratch. Never copies competitor text or trademarked claims.'],
                 ['bi-cloud-download', '#3B82F6', '#0C1A3D', 'Amazon Scraper', 'Extracts product title, bullets, specs, images, category and attributes from any Amazon marketplace.'],
                 ['bi-tags', '#F59E0B', '#3D2500', 'Brand Replacement', 'Automatically replaces all original brand and manufacturer references with your brand throughout.'],
@@ -419,7 +419,7 @@
                     <div class="nav-logo-icon"><i class="bi bi-robot"></i></div>
                     <div class="nav-logo-text">Amazon<br><span>Listing Builder</span></div>
                 </div>
-                <p style="font-size:13.5px;color:rgba(255,255,255,0.35);line-height:1.6;max-width:280px;">AI-powered Amazon listing generator for sellers who want to scale faster.</p>
+                <p style="font-size:13.5px;color:rgba(255,255,255,0.35);line-height:1.6;max-width:280px;">AI-powered multi-platform listing generator for sellers who want to scale faster.</p>
             </div>
             <div class="col-md-2 mb-4">
                 <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.3);margin-bottom:14px;">Product</div>
@@ -444,7 +444,7 @@
             </div>
         </div>
         <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:24px;margin-top:32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
-            <div style="font-size:13px;color:rgba(255,255,255,0.25);">© {{ date('Y') }} Amazon Listing Builder. All rights reserved.</div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.25);">© {{ date('Y') }} Seller Forge. All rights reserved.</div>
             <div style="display:flex;gap:20px;">
                 @foreach(['Privacy Policy', 'Terms of Service', 'Contact'] as $l)
                 <a href="#" style="font-size:12.5px;color:rgba(255,255,255,0.3);text-decoration:none;transition:color 0.15s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">{{ $l }}</a>

@@ -2,11 +2,12 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-theme="light">
 <head>
     <meta charset="utf-8">
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>(function(){var t=localStorage.getItem('albTheme');if(t==='dark'){document.documentElement.setAttribute('data-bs-theme','dark');}})()</script>
-    <title>@yield('title', 'Dashboard') — Amazon Listing Builder</title>
-    <meta name="description" content="AI-powered Amazon product listing generator for sellers">
+    <title>@yield('title', 'Dashboard') — Seller Forge</title>
+    <meta name="description" content="Seller Forge — Forge better listings. Sell smarter.">
 
     <!-- Bootstrap 5.3 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -17,11 +18,11 @@
 
     <style>
         :root {
-            --alb-red: #E31837;
-            --alb-red-dark: #b01028;
+            --alb-red: #d09226;
+            --alb-red-dark: #b07a1e;
             --alb-red-light: #ff4d6d;
             --alb-black: #0d0d0d;
-            --alb-dark: #111827;
+            --alb-dark: #2c1f13;
             --alb-gray: #6B7280;
             --alb-light: #F9FAFB;
             --alb-border: #E5E7EB;
@@ -222,7 +223,7 @@
             font-size: 20px;
             flex-shrink: 0;
         }
-        .alb-stat-icon.red { background: #FEE2E8; color: var(--alb-red); }
+        .alb-stat-icon.red { background: #FDF3DC; color: var(--alb-red); }
         .alb-stat-icon.blue { background: #EFF6FF; color: #3B82F6; }
         .alb-stat-icon.green { background: #ECFDF5; color: #10B981; }
         .alb-stat-icon.orange { background: #FFF7ED; color: #F97316; }
@@ -381,26 +382,17 @@
         .sidebar-overlay.show { display: block; }
     </style>
     @stack('styles')
-
-    {{-- Analytics head scripts (GA4, GTM, Clarity, etc) --}}
-    @foreach(\App\Models\AnalyticsSetting::enabled() as $analytics)
-    {!! $analytics->renderHeadCode() !!}
-    @endforeach
 </head>
 <body>
-{{-- Analytics body scripts (GTM noscript etc) --}}
-@foreach(\App\Models\AnalyticsSetting::enabled() as $analytics)
-{!! $analytics->renderBodyCode() !!}
-@endforeach
 
 <!-- Sidebar Overlay (Mobile) -->
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
 <!-- Sidebar -->
 <aside class="alb-sidebar" id="sidebar">
-    <a href="{{ route('dashboard') }}" class="alb-sidebar-logo">
-        <div class="logo-icon"><i class="bi bi-robot"></i></div>
-        <div class="logo-text">Amazon<br><span>Listing Builder</span></div>
+    <a href="{{ route('dashboard') }}" class="alb-sidebar-logo" style="padding:8px 0;display:block;">
+        <img src="{{ asset('images/logo.png') }}" alt="Seller Forge"
+            style="height:42px;width:auto;object-fit:contain;filter:brightness(0) invert(1);">
     </a>
 
     <nav class="alb-nav-section flex-grow-1">
@@ -444,9 +436,6 @@
         </a>
         <a href="{{ route('admin.ads') }}" class="alb-nav-item {{ request()->routeIs('admin.ads*') ? 'active' : '' }}">
             <i class="bi bi-megaphone-fill"></i> Advertisements
-        </a>
-        <a href="{{ route('admin.tracking') }}" class="alb-nav-item {{ request()->routeIs('admin.tracking*') ? 'active' : '' }}">
-            <i class="bi bi-graph-up-arrow"></i> Analytics & Tracking
         </a>
         <a href="{{ route('admin.payments') }}" class="alb-nav-item {{ request()->routeIs('admin.payments') ? 'active' : '' }}">
             <i class="bi bi-credit-card-fill"></i> Payments
@@ -593,5 +582,126 @@ setTimeout(() => {
 </script>
 
 @stack('scripts')
+
+{{-- ═══════════════════════════════════════════════════════
+     Popup Advertisement Banner — left side, session-based
+     Shows once per session (or per configured interval).
+     Only on non-admin pages.
+     Ad code managed from Admin → Advertisements.
+     ═══════════════════════════════════════════════════════ --}}
+@if(!request()->is('admin/*') && !request()->is('admin'))
+@php
+    $popupAd = \App\Models\AdSetting::where('slot_key','popup_left')
+        ->where('is_enabled', true)->first();
+@endphp
+@if($popupAd && $popupAd->ad_code)
+<div id="sfPopupAd" style="
+    position:fixed;
+    left:0;top:50%;transform:translateY(-50%);
+    z-index:9990;
+    background:white;
+    border-radius:0 16px 16px 0;
+    box-shadow:4px 0 24px rgba(44,31,19,0.18);
+    overflow:hidden;
+    width:300px;
+    transition:transform .4s cubic-bezier(.4,0,.2,1);
+    display:none;
+">
+    {{-- Close tab --}}
+    <button onclick="sfClosePopup()" style="
+        position:absolute;top:8px;right:8px;
+        width:26px;height:26px;
+        background:#2c1f13;color:white;
+        border:none;border-radius:50%;
+        font-size:13px;cursor:pointer;
+        display:flex;align-items:center;justify-content:center;
+        z-index:2;line-height:1;
+    ">✕</button>
+    {{-- Sponsored label --}}
+    <div style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+        color:#9CA3AF;text-align:center;padding:8px 0 2px;">Sponsored</div>
+    {{-- Ad content from admin --}}
+    <div style="padding:4px 12px 12px;">{!! $popupAd->ad_code !!}</div>
+</div>
+
+{{-- Pull tab (visible when popup is closed) --}}
+<button id="sfPopupTab" onclick="sfOpenPopup()" style="
+    position:fixed;left:0;top:50%;transform:translateY(-50%);
+    z-index:9989;
+    background:#d09226;color:white;
+    border:none;border-radius:0 8px 8px 0;
+    padding:14px 6px;
+    font-size:10px;font-weight:700;letter-spacing:.05em;
+    writing-mode:vertical-lr;
+    cursor:pointer;display:none;
+    box-shadow:2px 0 12px rgba(44,31,19,0.15);
+    transition:background .15s;
+" onmouseover="this.style.background='#b07a1e'" onmouseout="this.style.background='#d09226'">
+    ADS
+</button>
+@endif
+@endif
+
+
+<script>
+// ── Seller Forge Popup Ad — session-based ─────────────────────────────────────
+(function() {
+    var popup = document.getElementById('sfPopupAd');
+    var tab   = document.getElementById('sfPopupTab');
+    if (!popup) return;
+
+    var STORAGE_KEY  = 'sf_popup_closed_at';
+    var SHOW_DELAY   = 3000;   // ms after page load before showing
+    var RESHOW_AFTER = 3600;   // seconds before showing again (1 hour)
+
+    function sfShowPopup() {
+        popup.style.display = 'block';
+        tab.style.display   = 'none';
+        setTimeout(function() {
+            popup.style.transform = 'translateY(-50%) translateX(0)';
+        }, 50);
+    }
+
+    window.sfClosePopup = function() {
+        popup.style.transform = 'translateY(-50%) translateX(-110%)';
+        setTimeout(function() {
+            popup.style.display = 'none';
+            tab.style.display   = 'block';
+        }, 400);
+        try { sessionStorage.setItem(STORAGE_KEY, Date.now()); } catch(e) {}
+    };
+
+    window.sfOpenPopup = function() {
+        popup.style.display = 'block';
+        popup.style.transform = 'translateY(-50%) translateX(-110%)';
+        tab.style.display   = 'none';
+        setTimeout(function() {
+            popup.style.transform = 'translateY(-50%) translateX(0)';
+        }, 50);
+        try { sessionStorage.removeItem(STORAGE_KEY); } catch(e) {}
+    };
+
+    // Decide whether to show
+    var closedAt = null;
+    try { closedAt = sessionStorage.getItem(STORAGE_KEY); } catch(e) {}
+
+    var shouldShow = true;
+    if (closedAt) {
+        var elapsed = (Date.now() - parseInt(closedAt)) / 1000;
+        if (elapsed < RESHOW_AFTER) { shouldShow = false; }
+    }
+
+    if (shouldShow) {
+        // Start hidden off-screen, slide in after delay
+        popup.style.display   = 'block';
+        popup.style.transform = 'translateY(-50%) translateX(-110%)';
+        setTimeout(function() {
+            popup.style.transform = 'translateY(-50%) translateX(0)';
+        }, SHOW_DELAY);
+    } else {
+        tab.style.display = 'block';
+    }
+})();
+</script>
 </body>
 </html>
