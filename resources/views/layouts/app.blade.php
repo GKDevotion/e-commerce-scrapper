@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-theme="light">
+
 <head>
     <meta charset="utf-8">
-    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('public/images/seller-forge-favicon-64.png') }}" onerror="this.remove()">
+    {{-- Fallback emoji favicon if file missing --}}
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='15' fill='%232c1f13'/><text y='75' x='50' font-size='65' font-weight='900' text-anchor='middle' fill='%23d09226'>SF</text></svg>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script>(function(){var t=localStorage.getItem('albTheme');if(t==='dark'){document.documentElement.setAttribute('data-bs-theme','dark');}})()</script>
+    <script>
+        (function() {
+            var t = localStorage.getItem('albTheme');
+            if (t === 'dark') {
+                document.documentElement.setAttribute('data-bs-theme', 'dark');
+            }
+        })()
+    </script>
     <title>@yield('title', 'Dashboard') — Seller Forge</title>
     <meta name="description" content="Seller Forge — Forge better listings. Sell smarter.">
 
@@ -14,7 +25,9 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
 
     <style>
         :root {
@@ -30,7 +43,10 @@
             --alb-topbar-height: 64px;
         }
 
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #F4F6F9;
@@ -38,10 +54,40 @@
             margin: 0;
         }
 
+        /* Width */
+        ::-webkit-scrollbar {
+            width: 8px;          /* Vertical scrollbar */
+            height: 8px;         /* Horizontal scrollbar */
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #1b1b1b;
+            border-radius: 10px;
+        }
+
+        /* Thumb */
+        ::-webkit-scrollbar-thumb {
+            background: #c9952d; /* Gold color */
+            border-radius: 10px;
+            border: 2px solid #1b1b1b;
+        }
+
+        /* Hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e0ad3c;
+        }
+
+        * {
+            scrollbar-width: thin;               /* auto | thin | none */
+            scrollbar-color: #c9952d #1b1b1b;    /* thumb track */
+        }
+
         /* ===== SIDEBAR ===== */
         .alb-sidebar {
             position: fixed;
-            top: 0; left: 0;
+            top: 0;
+            left: 0;
             width: var(--alb-sidebar-width);
             height: 100vh;
             background: var(--alb-black);
@@ -58,16 +104,23 @@
             align-items: center;
             gap: 10px;
             padding: 20px 20px 16px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             text-decoration: none;
         }
+
         .alb-sidebar-logo .logo-icon {
-            width: 38px; height: 38px;
-            background: var(--alb-red);
+            width: 100%;
+            background: var(--alb-light);
             border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px; color: white; flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+            flex-shrink: 0;
+            padding: 8px;
         }
+
         .alb-sidebar-logo .logo-text {
             font-family: 'Sora', sans-serif;
             font-weight: 700;
@@ -75,25 +128,30 @@
             line-height: 1.2;
             color: white;
         }
-        .alb-sidebar-logo .logo-text span { color: var(--alb-red); }
+
+        .alb-sidebar-logo .logo-text span {
+            color: var(--alb-red);
+        }
 
         .alb-nav-section {
             padding: 12px 0;
         }
+
         .alb-nav-label {
             font-size: 10px;
             font-weight: 700;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.3);
+            color: #c9952dad;
             padding: 8px 20px 4px;
         }
+
         .alb-nav-item {
             display: flex;
             align-items: center;
             gap: 10px;
             padding: 10px 20px;
-            color: rgba(255,255,255,0.65);
+            color: rgba(255, 255, 255, 0.65);
             text-decoration: none;
             font-size: 13.5px;
             font-weight: 500;
@@ -101,43 +159,79 @@
             transition: all 0.15s;
             position: relative;
         }
+
         .alb-nav-item:hover {
             color: white;
-            background: rgba(255,255,255,0.06);
+            background: rgba(255, 255, 255, 0.06);
         }
+
         .alb-nav-item.active {
             color: white;
-            background: rgba(227,24,55,0.2);
+            background: rgba(227, 24, 55, 0.2);
         }
+
         .alb-nav-item.active::before {
             content: '';
             position: absolute;
-            left: 0; top: 0; bottom: 0;
+            left: 0;
+            top: 0;
+            bottom: 0;
             width: 3px;
             background: var(--alb-red);
             border-radius: 0 2px 2px 0;
         }
-        .alb-nav-item i { font-size: 16px; width: 20px; text-align: center; }
+
+        .alb-nav-item i {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
 
         .alb-sidebar-footer {
             margin-top: auto;
             padding: 16px 20px;
-            border-top: 1px solid rgba(255,255,255,0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
+
         .alb-user-mini {
-            display: flex; align-items: center; gap: 10px;
-            text-decoration: none; padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            padding: 8px 10px;
             border-radius: 10px;
             transition: background 0.15s;
         }
-        .alb-user-mini:hover { background: rgba(255,255,255,0.06); }
-        .alb-user-mini img {
-            width: 34px; height: 34px;
-            border-radius: 50%; object-fit: cover;
+
+        .alb-user-mini:hover {
+            background: rgba(255, 255, 255, 0.06);
         }
-        .alb-user-mini .info { flex: 1; min-width: 0; }
-        .alb-user-mini .name { font-size: 12.5px; font-weight: 600; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .alb-user-mini .plan { font-size: 11px; color: rgba(255,255,255,0.45); }
+
+        .alb-user-mini img {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .alb-user-mini .info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .alb-user-mini .name {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .alb-user-mini .plan {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.45);
+        }
 
         /* ===== TOPBAR ===== */
         .alb-topbar {
@@ -154,6 +248,7 @@
             gap: 16px;
             z-index: 999;
         }
+
         .alb-topbar .page-title {
             font-family: 'Sora', sans-serif;
             font-size: 17px;
@@ -161,6 +256,7 @@
             color: var(--alb-black);
             flex: 1;
         }
+
         .alb-topbar .topbar-btn {
             background: var(--alb-red);
             color: white;
@@ -170,10 +266,16 @@
             font-size: 13px;
             font-weight: 600;
             text-decoration: none;
-            display: flex; align-items: center; gap: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
             transition: background 0.15s;
         }
-        .alb-topbar .topbar-btn:hover { background: var(--alb-red-dark); color: white; }
+
+        .alb-topbar .topbar-btn:hover {
+            background: var(--alb-red-dark);
+            color: white;
+        }
 
         /* ===== MAIN CONTENT ===== */
         .alb-main {
@@ -181,6 +283,7 @@
             padding-top: var(--alb-topbar-height);
             min-height: 100vh;
         }
+
         .alb-content {
             padding: 28px 28px;
         }
@@ -193,11 +296,18 @@
             padding: 24px;
             transition: box-shadow 0.2s;
         }
-        .alb-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+
+        .alb-card:hover {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
         .alb-card-header {
-            display: flex; align-items: center; justify-content: space-between;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-bottom: 20px;
         }
+
         .alb-card-title {
             font-family: 'Sora', sans-serif;
             font-size: 15px;
@@ -216,18 +326,43 @@
             align-items: flex-start;
             gap: 16px;
         }
+
         .alb-stat-icon {
-            width: 46px; height: 46px;
+            width: 46px;
+            height: 46px;
             border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 20px;
             flex-shrink: 0;
         }
-        .alb-stat-icon.red { background: #FDF3DC; color: var(--alb-red); }
-        .alb-stat-icon.blue { background: #EFF6FF; color: #3B82F6; }
-        .alb-stat-icon.green { background: #ECFDF5; color: #10B981; }
-        .alb-stat-icon.orange { background: #FFF7ED; color: #F97316; }
-        .alb-stat-icon.purple { background: #F5F3FF; color: #8B5CF6; }
+
+        .alb-stat-icon.red {
+            background: #FDF3DC;
+            color: var(--alb-red);
+        }
+
+        .alb-stat-icon.blue {
+            background: #EFF6FF;
+            color: #3B82F6;
+        }
+
+        .alb-stat-icon.green {
+            background: #ECFDF5;
+            color: #10B981;
+        }
+
+        .alb-stat-icon.orange {
+            background: #FFF7ED;
+            color: #F97316;
+        }
+
+        .alb-stat-icon.purple {
+            background: #F5F3FF;
+            color: #8B5CF6;
+        }
+
         .alb-stat-value {
             font-family: 'Sora', sans-serif;
             font-size: 26px;
@@ -236,6 +371,7 @@
             line-height: 1;
             margin-bottom: 4px;
         }
+
         .alb-stat-label {
             font-size: 12.5px;
             color: var(--alb-gray);
@@ -253,7 +389,13 @@
             border-radius: 9px;
             transition: all 0.15s;
         }
-        .btn-alb-primary:hover { background: var(--alb-red-dark); color: white; transform: translateY(-1px); }
+
+        .btn-alb-primary:hover {
+            background: var(--alb-red-dark);
+            color: white;
+            transform: translateY(-1px);
+        }
+
         .btn-alb-outline {
             border: 1.5px solid var(--alb-border);
             color: #374151;
@@ -264,17 +406,62 @@
             border-radius: 9px;
             transition: all 0.15s;
         }
-        .btn-alb-outline:hover { border-color: var(--alb-red); color: var(--alb-red); }
+
+        .btn-alb-outline:hover {
+            border-color: var(--alb-red);
+            color: var(--alb-red);
+        }
 
         /* ===== BADGES ===== */
-        .badge-status-completed { background: #D1FAE5; color: #065F46; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
-        .badge-status-pending { background: #FEF3C7; color: #92400E; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
-        .badge-status-failed { background: #d09226; color: #b1740a; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
-        .badge-status-processing { background: #DBEAFE; color: #1E40AF; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+        .badge-status-completed {
+            background: #D1FAE5;
+            color: #065F46;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .badge-status-pending {
+            background: #FEF3C7;
+            color: #92400E;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .badge-status-failed {
+            background: #FEE2E2;
+            color: #991B1B;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .badge-status-processing {
+            background: #DBEAFE;
+            color: #1E40AF;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
 
         /* ===== FORMS ===== */
-        .alb-form-group { margin-bottom: 18px; }
-        .alb-label { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; display: block; }
+        .alb-form-group {
+            margin-bottom: 18px;
+        }
+
+        .alb-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 6px;
+            display: block;
+        }
+
         .alb-input {
             width: 100%;
             padding: 10px 14px;
@@ -285,15 +472,24 @@
             transition: border-color 0.15s, box-shadow 0.15s;
             background: white;
         }
+
         .alb-input:focus {
             outline: none;
             border-color: var(--alb-red);
-            box-shadow: 0 0 0 3px rgba(227,24,55,0.1);
+            box-shadow: 0 0 0 3px rgba(227, 24, 55, 0.1);
         }
-        .alb-textarea { min-height: 100px; resize: vertical; }
+
+        .alb-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
 
         /* ===== TABLES ===== */
-        .alb-table { width: 100%; border-collapse: collapse; }
+        .alb-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
         .alb-table th {
             font-size: 11.5px;
             font-weight: 700;
@@ -305,6 +501,7 @@
             border-bottom: 1px solid var(--alb-border);
             text-align: left;
         }
+
         .alb-table td {
             padding: 12px 16px;
             border-bottom: 1px solid #F3F4F6;
@@ -312,8 +509,14 @@
             color: #374151;
             vertical-align: middle;
         }
-        .alb-table tr:last-child td { border-bottom: none; }
-        .alb-table tr:hover td { background: #FAFAFA; }
+
+        .alb-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .alb-table tr:hover td {
+            background: #FAFAFA;
+        }
 
         /* ===== ALERTS ===== */
         .alb-alert {
@@ -326,18 +529,39 @@
             align-items: flex-start;
             gap: 10px;
         }
-        .alb-alert.success { background: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; }
-        .alb-alert.error { background: #d09226; color: #b1740a; border: 1px solid #FCA5A5; }
-        .alb-alert.warning { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; }
-        .alb-alert.info { background: #DBEAFE; color: #1E40AF; border: 1px solid #BFDBFE; }
+
+        .alb-alert.success {
+            background: #D1FAE5;
+            color: #065F46;
+            border: 1px solid #A7F3D0;
+        }
+
+        .alb-alert.error {
+            background: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #FCA5A5;
+        }
+
+        .alb-alert.warning {
+            background: #FEF3C7;
+            color: #92400E;
+            border: 1px solid #FDE68A;
+        }
+
+        .alb-alert.info {
+            background: #DBEAFE;
+            color: #1E40AF;
+            border: 1px solid #BFDBFE;
+        }
 
         /* ===== USAGE BAR ===== */
         .usage-bar-track {
             height: 6px;
-            background: #F3F4F6;
+            background: green;
             border-radius: 99px;
             overflow: hidden;
         }
+
         .usage-bar-fill {
             height: 100%;
             background: var(--alb-red);
@@ -347,255 +571,376 @@
 
         /* ===== MOBILE ===== */
         @media (max-width: 991px) {
-            .alb-sidebar { transform: translateX(-100%); }
-            .alb-sidebar.open { transform: translateX(0); }
-            .alb-main { margin-left: 0; }
-            .alb-topbar { left: 0; }
-            .alb-content { padding: 20px 16px; }
+            .alb-sidebar {
+                transform: translateX(-100%);
+            }
+
+            .alb-sidebar.open {
+                transform: translateX(0);
+            }
+
+            .alb-main {
+                margin-left: 0;
+            }
+
+            .alb-topbar {
+                left: 0;
+            }
+
+            .alb-content {
+                padding: 20px 16px;
+            }
         }
 
         /* ===== DARK MODE ===== */
-        [data-bs-theme="dark"] body { background: #0f1117; color: #e5e7eb; }
-        [data-bs-theme="dark"] .alb-topbar { background: #1a1d24; border-color: #2d3139; }
-        [data-bs-theme="dark"] .alb-card, [data-bs-theme="dark"] .alb-stat { background: #1a1d24; border-color: #2d3139; }
-        [data-bs-theme="dark"] .alb-input { background: #1a1d24; border-color: #2d3139; color: #e5e7eb; }
-        [data-bs-theme="dark"] .alb-table th { background: #1a1d24; }
+        [data-bs-theme="dark"] body {
+            background: #0f1117;
+            color: #e5e7eb;
+        }
+
+        [data-bs-theme="dark"] .alb-topbar {
+            background: #1a1d24;
+            border-color: #2d3139;
+        }
+
+        [data-bs-theme="dark"] .alb-card,
+        [data-bs-theme="dark"] .alb-stat {
+            background: #1a1d24;
+            border-color: #2d3139;
+        }
+
+        [data-bs-theme="dark"] .alb-input {
+            background: #1a1d24;
+            border-color: #2d3139;
+            color: #e5e7eb;
+        }
+
+        [data-bs-theme="dark"] .alb-table th {
+            background: #1a1d24;
+        }
 
         /* ===== ANIMATIONS ===== */
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in-up { animation: fadeInUp 0.35s ease both; }
-        .fade-in-up-delay-1 { animation-delay: 0.07s; }
-        .fade-in-up-delay-2 { animation-delay: 0.14s; }
-        .fade-in-up-delay-3 { animation-delay: 0.21s; }
-        .fade-in-up-delay-4 { animation-delay: 0.28s; }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .spin { animation: spin 1s linear infinite; }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.35s ease both;
+        }
+
+        .fade-in-up-delay-1 {
+            animation-delay: 0.07s;
+        }
+
+        .fade-in-up-delay-2 {
+            animation-delay: 0.14s;
+        }
+
+        .fade-in-up-delay-3 {
+            animation-delay: 0.21s;
+        }
+
+        .fade-in-up-delay-4 {
+            animation-delay: 0.28s;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spin {
+            animation: spin 1s linear infinite;
+        }
 
         /* ===== SIDEBAR OVERLAY ===== */
         .sidebar-overlay {
             display: none;
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.5);
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
             z-index: 999;
         }
-        .sidebar-overlay.show { display: block; }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
     </style>
     @stack('styles')
 </head>
+
 <body>
 
-<!-- Sidebar Overlay (Mobile) -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    <!-- Sidebar Overlay (Mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-<!-- Sidebar -->
-<aside class="alb-sidebar" id="sidebar">
-    <a href="{{ route('dashboard') }}" class="alb-sidebar-logo" style="padding:8px 0;display:block;">
-        <img src="{{ asset('images/logo.png') }}" alt="Seller Forge"
-            style="height:42px;width:auto;object-fit:contain;filter:brightness(0) invert(1);">
-    </a>
-
-    <nav class="alb-nav-section flex-grow-1">
-        <a href="{{ route('dashboard') }}" class="alb-nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-            <i class="bi bi-grid-1x2-fill"></i> Dashboard
+    <!-- Sidebar -->
+    <aside class="alb-sidebar" id="sidebar">
+        <a href="{{ route('dashboard') }}" class="alb-sidebar-logo" style="padding:5px;display:block;">
+            {{-- Inline SVG logo — no file dependency, matches Seller Forge brand --}}
+            <img src="{{ asset('public/images/logo.png') }}" alt="Seller Forge Logo" class="logo-icon">
         </a>
 
-        <div class="alb-nav-label">Listings</div>
-        <a href="{{ route('listings.create') }}" class="alb-nav-item {{ request()->routeIs('listings.create') ? 'active' : '' }}">
-            <i class="bi bi-plus-circle-fill"></i> New Listing
-        </a>
-        <a href="{{ route('listings.index') }}" class="alb-nav-item {{ request()->routeIs('listings.index') ? 'active' : '' }}">
-            <i class="bi bi-collection-fill"></i> My Listings
-        </a>
+        <nav class="alb-nav-section flex-grow-1">
+            <a href="{{ route('dashboard') }}"
+                class="alb-nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                <i class="bi bi-grid-1x2-fill"></i> Dashboard
+            </a>
 
-        <div class="alb-nav-label">Account</div>
-        {{-- Billing removed in Phase 2 — unlimited listings, personal API key --}}
-        <a href="{{ route('profile.index') }}" class="alb-nav-item {{ request()->routeIs('profile.*') ? 'active' : '' }}">
-            <i class="bi bi-person-fill"></i> Profile
-        </a>
+            <div class="alb-nav-label">Listings</div>
+            <a href="{{ route('listings.create') }}"
+                class="alb-nav-item {{ request()->routeIs('listings.create') ? 'active' : '' }}">
+                <i class="bi bi-plus-circle-fill"></i> New Listing
+            </a>
+            <a href="{{ route('listings.index') }}"
+                class="alb-nav-item {{ request()->routeIs('listings.index') ? 'active' : '' }}">
+                <i class="bi bi-collection-fill"></i> My Listings
+            </a>
 
-        @if(auth()->user()->isAdmin())
-        <div class="alb-nav-label">Admin</div>
-        <a href="{{ route('admin.dashboard') }}" class="alb-nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-            <i class="bi bi-speedometer2"></i> Admin Dashboard
-        </a>
-        <a href="{{ route('admin.users') }}" class="alb-nav-item {{ request()->routeIs('admin.users*') ? 'active' : '' }}">
-            <i class="bi bi-people-fill"></i> Users
-        </a>
-        <a href="{{ route('admin.plans') }}" class="alb-nav-item {{ request()->routeIs('admin.plans*') ? 'active' : '' }}">
-            <i class="bi bi-layers-fill"></i> Plans
-        </a>
-        <a href="{{ route('admin.ai-settings') }}" class="alb-nav-item {{ request()->routeIs('admin.ai*') ? 'active' : '' }}">
-            <i class="bi bi-cpu-fill"></i> AI Settings
-        </a>
-        <a href="{{ route('admin.analytics') }}" class="alb-nav-item {{ request()->routeIs('admin.analytics') ? 'active' : '' }}">
-            <i class="bi bi-bar-chart-fill"></i> Analytics
-        </a>
-        <a href="{{ route('admin.platforms') }}" class="alb-nav-item {{ request()->routeIs('admin.platforms*') ? 'active' : '' }}">
-            <i class="bi bi-grid-fill"></i> Platforms
-        </a>
-        <a href="{{ route('admin.ads') }}" class="alb-nav-item {{ request()->routeIs('admin.ads*') ? 'active' : '' }}">
-            <i class="bi bi-megaphone-fill"></i> Advertisements
-        </a>
-        <a href="{{ route('admin.payments') }}" class="alb-nav-item {{ request()->routeIs('admin.payments') ? 'active' : '' }}">
-            <i class="bi bi-credit-card-fill"></i> Payments
-        </a>
-        <a href="{{ route('admin.prompts') }}" class="alb-nav-item {{ request()->routeIs('admin.prompts*') ? 'active' : '' }}">
-            <i class="bi bi-file-text-fill"></i> AI Prompts
-        </a>
-        <a href="{{ route('admin.logs.api') }}" class="alb-nav-item {{ request()->routeIs('admin.logs.api') ? 'active' : '' }}">
-            <i class="bi bi-journal-code"></i> API Logs
-        </a>
-        <a href="{{ route('admin.logs.audit') }}" class="alb-nav-item {{ request()->routeIs('admin.logs.audit') ? 'active' : '' }}">
-            <i class="bi bi-shield-check"></i> Audit Logs
-        </a>
-        @endif
-    </nav>
+            <div class="alb-nav-label">Account</div>
+            {{-- Billing removed in Phase 2 — unlimited listings, personal API key --}}
+            <a href="{{ route('profile.index') }}"
+                class="alb-nav-item {{ request()->routeIs('profile.*') ? 'active' : '' }}">
+                <i class="bi bi-person-fill"></i> Profile
+            </a>
 
-    <div class="alb-sidebar-footer">
-        <!-- Usage -->
-        @php $user = auth()->user(); @endphp
-        <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;margin-bottom:12px;">
-            <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:6px;">
-                <span>Listings Used</span>
-                <span style="color:rgba(255,255,255,0.7);">{{ $user->listings_used }} / {{ $user->plan?->listings_limit_display ?? '5' }}</span>
-            </div>
-            <div class="usage-bar-track">
-                <div class="usage-bar-fill" style="width:{{ $user->getUsagePercentage() }}%"></div>
-            </div>
-            @if($user->plan)
-            <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:6px;">{{ $user->plan->name }} Plan</div>
+            @if (auth()->user()->isAdmin())
+                <div class="alb-nav-label">Admin</div>
+                <a href="{{ route('admin.dashboard') }}"
+                    class="alb-nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                    <i class="bi bi-speedometer2"></i> Admin Dashboard
+                </a>
+                <a href="{{ route('admin.users') }}"
+                    class="alb-nav-item {{ request()->routeIs('admin.users*') ? 'active' : '' }}">
+                    <i class="bi bi-people-fill"></i> Users
+                </a>
+                <a href="{{ route('admin.plans') }}"
+                    class="alb-nav-item {{ request()->routeIs('admin.plans*') ? 'active' : '' }}">
+                    <i class="bi bi-layers-fill"></i> Plans
+                </a>
+                <a href="{{ route('admin.ai-settings') }}"
+                    class="alb-nav-item {{ request()->routeIs('admin.ai*') ? 'active' : '' }}">
+                    <i class="bi bi-cpu-fill"></i> AI Settings
+                </a>
+                <a href="{{ route('admin.analytics') }}"
+                    class="alb-nav-item {{ request()->routeIs('admin.analytics') ? 'active' : '' }}">
+                    <i class="bi bi-bar-chart-fill"></i> Analytics
+                </a>
+                <a href="{{ route('admin.platforms') }}"
+                    class="alb-nav-item {{ request()->routeIs('admin.platforms*') ? 'active' : '' }}">
+                    <i class="bi bi-grid-fill"></i> Platforms
+                </a>
+                <a href="{{ route('admin.ads') }}"
+                    class="alb-nav-item {{ request()->routeIs('admin.ads*') ? 'active' : '' }}">
+                    <i class="bi bi-megaphone-fill"></i> Advertisements
+                </a>
+                <a href="{{ route('admin.payments') }}"
+                    class="alb-nav-item {{ request()->routeIs('admin.payments') ? 'active' : '' }}">
+                    <i class="bi bi-credit-card-fill"></i> Payments
+                </a>
+                <a href="{{ route('admin.prompts') }}"
+                    class="alb-nav-item {{ request()->routeIs('admin.prompts*') ? 'active' : '' }}">
+                    <i class="bi bi-file-text-fill"></i> AI Prompts
+                </a>
+                <a href="{{ route('admin.logs.api') }}"
+                    class="alb-nav-item {{ request()->routeIs('admin.logs.api') ? 'active' : '' }}">
+                    <i class="bi bi-journal-code"></i> API Logs
+                </a>
+                <a href="{{ route('admin.logs.audit') }}"
+                    class="alb-nav-item {{ request()->routeIs('admin.logs.audit') ? 'active' : '' }}">
+                    <i class="bi bi-shield-check"></i> Audit Logs
+                </a>
             @endif
-        </div>
+        </nav>
 
-        <a href="{{ route('profile.index') }}" class="alb-user-mini">
-            <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}">
-            <div class="info">
-                <div class="name">{{ $user->name }}</div>
-                <div class="plan">{{ $user->plan?->name ?? 'Free' }}</div>
+        <div class="alb-sidebar-footer">
+            <!-- Usage -->
+            @php $user = auth()->user(); @endphp
+            <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;margin-bottom:12px;">
+                <div
+                    style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:6px;">
+                    <span>Listings Used</span>
+                    <span style="color:rgba(255,255,255,0.7);">{{ $user->listings_used }} /
+                        {{ $user->plan?->listings_limit_display ?? '5' }}</span>
+                </div>
+                <div class="usage-bar-track">
+                    <div class="usage-bar-fill" style="width:{{ $user->getUsagePercentage() }}%"></div>
+                </div>
+                @if ($user->plan)
+                    <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:6px;">{{ $user->plan->name }}
+                        Plan</div>
+                @endif
             </div>
-            <i class="bi bi-three-dots-vertical" style="color:rgba(255,255,255,0.4);font-size:14px;"></i>
-        </a>
 
-        <form method="POST" action="{{ route('logout') }}" class="mt-2">
-            @csrf
-            <button type="submit" style="width:100%;background:rgba(255,255,255,0.06);border:none;color:rgba(255,255,255,0.5);padding:9px;border-radius:8px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.15s;" onmouseover="this.style.background='rgba(227,24,55,0.2)';this.style.color='#ff6b80'" onmouseout="this.style.background='rgba(255,255,255,0.06)';this.style.color='rgba(255,255,255,0.5)'">
-                <i class="bi bi-box-arrow-left"></i> Sign Out
-            </button>
-        </form>
-    </div>
-</aside>
+            <a href="{{ route('profile.index') }}" class="alb-user-mini">
+                <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}">
+                <div class="info">
+                    <div class="name">{{ $user->name }}</div>
+                    <div class="plan">{{ $user->plan?->name ?? 'Free' }}</div>
+                </div>
+                <i class="bi bi-three-dots-vertical" style="color:rgba(255,255,255,0.4);font-size:14px;"></i>
+            </a>
 
-<!-- Topbar -->
-<header class="alb-topbar">
-    <button class="d-lg-none btn btn-sm" onclick="openSidebar()" style="border:none;color:#6B7280;font-size:18px;padding:4px 8px;">
-        <i class="bi bi-list"></i>
-    </button>
-    <h1 class="page-title">@yield('page-title', 'Dashboard')</h1>
-    <div class="d-flex align-items-center gap-2">
-        @yield('topbar-actions')
-        <!-- Dark mode toggle -->
-        <button onclick="toggleDarkMode()" style="border:none;background:none;color:#6B7280;font-size:18px;padding:6px;border-radius:8px;cursor:pointer;" title="Toggle Dark Mode">
-            <i class="bi bi-moon-fill" id="darkModeIcon"></i>
+            <form method="POST" action="{{ route('logout') }}" class="mt-2">
+                @csrf
+                <button type="submit"
+                    style="width:100%;background:rgba(255,255,255,0.06);border:none;color:rgba(255,255,255,0.5);padding:9px;border-radius:8px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.15s;"
+                    onmouseover="this.style.background='rgba(227,24,55,0.2)';this.style.color='#ff6b80'"
+                    onmouseout="this.style.background='rgba(255,255,255,0.06)';this.style.color='rgba(255,255,255,0.5)'">
+                    <i class="bi bi-box-arrow-left"></i> Sign Out
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- Topbar -->
+    <header class="alb-topbar">
+        <button class="d-lg-none btn btn-sm" onclick="openSidebar()"
+            style="border:none;color:#6B7280;font-size:18px;padding:4px 8px;">
+            <i class="bi bi-list"></i>
         </button>
-        <a href="{{ route('listings.create') }}" class="topbar-btn d-none d-sm-flex">
-            <i class="bi bi-plus-lg"></i> New Listing
-        </a>
-    </div>
-</header>
-
-<!-- Main -->
-<main class="alb-main">
-    <div class="alb-content">
-        <!-- Flash Messages -->
-        @if(session('success'))
-        <div class="alb-alert success fade-in-up">
-            <i class="bi bi-check-circle-fill"></i>
-            <div>{{ session('success') }}</div>
+        <h1 class="page-title">@yield('page-title', 'Dashboard')</h1>
+        <div class="d-flex align-items-center gap-2">
+            @yield('topbar-actions')
+            <!-- Dark mode toggle -->
+            <button onclick="toggleDarkMode()"
+                style="border:none;background:none;color:#6B7280;font-size:18px;padding:6px;border-radius:8px;cursor:pointer;"
+                title="Toggle Dark Mode">
+                <i class="bi bi-moon-fill" id="darkModeIcon"></i>
+            </button>
+            <a href="{{ route('listings.create') }}" class="topbar-btn d-none d-sm-flex">
+                <i class="bi bi-plus-lg"></i> New Listing
+            </a>
         </div>
-        @endif
-        @if(session('error'))
-        <div class="alb-alert error fade-in-up">
-            <i class="bi bi-x-circle-fill"></i>
-            <div>{{ session('error') }}</div>
+    </header>
+
+    <!-- Main -->
+    <main class="alb-main">
+        <div class="alb-content">
+            <!-- Flash Messages -->
+            @if (session('success'))
+                <div class="alb-alert success fade-in-up">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <div>{{ session('success') }}</div>
+                </div>
+            @endif
+            @if (session('error'))
+                <div class="alb-alert error fade-in-up">
+                    <i class="bi bi-x-circle-fill"></i>
+                    <div>{{ session('error') }}</div>
+                </div>
+            @endif
+            @if (session('warning'))
+                <div class="alb-alert warning fade-in-up">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    <div>{{ session('warning') }}</div>
+                </div>
+            @endif
+
+            {{-- Content top ad slot --}}
+            @foreach (\App\Models\AdSetting::forPlacement('content')->where('slot_key', 'content_top') as $ad)
+                @if ($ad->ad_code)
+                    <div class="alb-ad-slot mb-3" style="text-align:center;">{!! $ad->ad_code !!}</div>
+                @endif
+            @endforeach
+
+            @yield('content')
+            @php $bottomAds = \App\Models\AdSetting::forPlacement('content')->where('slot_key','content_bottom'); @endphp
+            @foreach ($bottomAds as $ad)
+                @if ($ad->ad_code)
+                    <div class="alb-ad-slot mt-4" style="text-align:center;">{!! $ad->ad_code !!}</div>
+                @endif
+            @endforeach
         </div>
-        @endif
-        @if(session('warning'))
-        <div class="alb-alert warning fade-in-up">
-            <i class="bi bi-exclamation-triangle-fill"></i>
-            <div>{{ session('warning') }}</div>
-        </div>
-        @endif
+    </main>
 
-        {{-- Content top ad slot --}}
-        @foreach(\App\Models\AdSetting::forPlacement('content')->where('slot_key','content_top') as $ad)
-        @if($ad->ad_code)
-        <div class="alb-ad-slot mb-3" style="text-align:center;">{!! $ad->ad_code !!}</div>
-        @endif
-        @endforeach
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-        @yield('content')
-        @php $bottomAds = \App\Models\AdSetting::forPlacement('content')->where('slot_key','content_bottom'); @endphp
-        @foreach($bottomAds as $ad)
-        @if($ad->ad_code)
-        <div class="alb-ad-slot mt-4" style="text-align:center;">{!! $ad->ad_code !!}</div>
-        @endif
-        @endforeach
-    </div>
-</main>
+    <script>
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('sidebarOverlay').classList.add('show');
+        }
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('show');
+        }
 
-<script>
-function openSidebar() {
-    document.getElementById('sidebar').classList.add('open');
-    document.getElementById('sidebarOverlay').classList.add('show');
-}
-function closeSidebar() {
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('sidebarOverlay').classList.remove('show');
-}
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const isDark = html.getAttribute('data-bs-theme') === 'dark';
+            html.setAttribute('data-bs-theme', isDark ? 'light' : 'dark');
+            document.getElementById('darkModeIcon').className = isDark ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
+            localStorage.setItem('albTheme', isDark ? 'light' : 'dark');
+        }
 
-function toggleDarkMode() {
-    const html = document.documentElement;
-    const isDark = html.getAttribute('data-bs-theme') === 'dark';
-    html.setAttribute('data-bs-theme', isDark ? 'light' : 'dark');
-    document.getElementById('darkModeIcon').className = isDark ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
-    localStorage.setItem('albTheme', isDark ? 'light' : 'dark');
-}
+        // Sync icon to already-applied theme
+        (function() {
+            var t = localStorage.getItem('albTheme');
+            var i = document.getElementById('darkModeIcon');
+            if (i && t === 'dark') i.className = 'bi bi-sun-fill';
+        })();
 
-// Sync icon to already-applied theme
-(function(){var t=localStorage.getItem('albTheme');var i=document.getElementById('darkModeIcon');if(i&&t==='dark')i.className='bi bi-sun-fill';})();
+        // Unsaved changes warning
+        (function() {
+            var d = false;
+            document.querySelectorAll('form[data-warn-unsaved]').forEach(function(f) {
+                f.querySelectorAll('input,textarea,select').forEach(function(el) {
+                    el.addEventListener('change', function() {
+                        d = true;
+                    });
+                    el.addEventListener('input', function() {
+                        d = true;
+                    });
+                });
+                f.addEventListener('submit', function() {
+                    d = false;
+                });
+            });
+            window.addEventListener('beforeunload', function(e) {
+                if (d) {
+                    e.preventDefault();
+                    e.returnValue = 'You have unsaved changes.';
+                }
+            });
+        })();
 
-// Unsaved changes warning
-(function(){var d=false;document.querySelectorAll('form[data-warn-unsaved]').forEach(function(f){f.querySelectorAll('input,textarea,select').forEach(function(el){el.addEventListener('change',function(){d=true;});el.addEventListener('input',function(){d=true;});});f.addEventListener('submit',function(){d=false;});});window.addEventListener('beforeunload',function(e){if(d){e.preventDefault();e.returnValue='You have unsaved changes.';}});})();
+        // Auto-dismiss alerts
+        setTimeout(() => {
+            document.querySelectorAll('.alb-alert').forEach(el => {
+                el.style.transition = 'opacity 0.4s';
+                el.style.opacity = '0';
+                setTimeout(() => el.remove(), 400);
+            });
+        }, 5000);
+    </script>
 
-// Auto-dismiss alerts
-setTimeout(() => {
-    document.querySelectorAll('.alb-alert').forEach(el => {
-        el.style.transition = 'opacity 0.4s';
-        el.style.opacity = '0';
-        setTimeout(() => el.remove(), 400);
-    });
-}, 5000);
-</script>
+    @stack('scripts')
 
-@stack('scripts')
-
-{{-- ═══════════════════════════════════════════════════════
+    {{-- ═══════════════════════════════════════════════════════
      Popup Advertisement Banner — left side, session-based
      Shows once per session (or per configured interval).
      Only on non-admin pages.
      Ad code managed from Admin → Advertisements.
      ═══════════════════════════════════════════════════════ --}}
-@if(!request()->is('admin/*') && !request()->is('admin'))
-@php
-    $popupAd = \App\Models\AdSetting::where('slot_key','popup_left')
-        ->where('is_enabled', true)->first();
-@endphp
-@if($popupAd && $popupAd->ad_code)
-<div id="sfPopupAd" style="
+    @if (!request()->is('admin/*') && !request()->is('admin'))
+        @php
+            $popupAd = \App\Models\AdSetting::where('slot_key', 'popup_left')->where('is_enabled', true)->first();
+        @endphp
+        @if ($popupAd && $popupAd->ad_code)
+            <div id="sfPopupAd"
+                style="
     position:fixed;
     left:0;top:50%;transform:translateY(-50%);
     z-index:9990;
@@ -607,8 +952,9 @@ setTimeout(() => {
     transition:transform .4s cubic-bezier(.4,0,.2,1);
     display:none;
 ">
-    {{-- Close tab --}}
-    <button onclick="sfClosePopup()" style="
+                {{-- Close tab --}}
+                <button onclick="sfClosePopup()"
+                    style="
         position:absolute;top:8px;right:8px;
         width:26px;height:26px;
         background:#2c1f13;color:white;
@@ -617,15 +963,18 @@ setTimeout(() => {
         display:flex;align-items:center;justify-content:center;
         z-index:2;line-height:1;
     ">✕</button>
-    {{-- Sponsored label --}}
-    <div style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
-        color:#9CA3AF;text-align:center;padding:8px 0 2px;">Sponsored</div>
-    {{-- Ad content from admin --}}
-    <div style="padding:4px 12px 12px;">{!! $popupAd->ad_code !!}</div>
-</div>
+                {{-- Sponsored label --}}
+                <div
+                    style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+        color:#9CA3AF;text-align:center;padding:8px 0 2px;">
+                    Sponsored</div>
+                {{-- Ad content from admin --}}
+                <div style="padding:4px 12px 12px;">{!! $popupAd->ad_code !!}</div>
+            </div>
 
-{{-- Pull tab (visible when popup is closed) --}}
-<button id="sfPopupTab" onclick="sfOpenPopup()" style="
+            {{-- Pull tab (visible when popup is closed) --}}
+            <button id="sfPopupTab" onclick="sfOpenPopup()"
+                style="
     position:fixed;left:0;top:50%;transform:translateY(-50%);
     z-index:9989;
     background:#d09226;color:white;
@@ -636,72 +985,82 @@ setTimeout(() => {
     cursor:pointer;display:none;
     box-shadow:2px 0 12px rgba(44,31,19,0.15);
     transition:background .15s;
-" onmouseover="this.style.background='#b07a1e'" onmouseout="this.style.background='#d09226'">
-    ADS
-</button>
-@endif
-@endif
+"
+                onmouseover="this.style.background='#b07a1e'" onmouseout="this.style.background='#d09226'">
+                ADS
+            </button>
+        @endif
+    @endif
 
 
-<script>
-// ── Seller Forge Popup Ad — session-based ─────────────────────────────────────
-(function() {
-    var popup = document.getElementById('sfPopupAd');
-    var tab   = document.getElementById('sfPopupTab');
-    if (!popup) return;
+    <script>
+        // ── Seller Forge Popup Ad — session-based ─────────────────────────────────────
+        (function() {
+            var popup = document.getElementById('sfPopupAd');
+            var tab = document.getElementById('sfPopupTab');
+            if (!popup) return;
 
-    var STORAGE_KEY  = 'sf_popup_closed_at';
-    var SHOW_DELAY   = 3000;   // ms after page load before showing
-    var RESHOW_AFTER = 3600;   // seconds before showing again (1 hour)
+            var STORAGE_KEY = 'sf_popup_closed_at';
+            var SHOW_DELAY = 3000; // ms after page load before showing
+            var RESHOW_AFTER = 3600; // seconds before showing again (1 hour)
 
-    function sfShowPopup() {
-        popup.style.display = 'block';
-        tab.style.display   = 'none';
-        setTimeout(function() {
-            popup.style.transform = 'translateY(-50%) translateX(0)';
-        }, 50);
-    }
+            function sfShowPopup() {
+                popup.style.display = 'block';
+                tab.style.display = 'none';
+                setTimeout(function() {
+                    popup.style.transform = 'translateY(-50%) translateX(0)';
+                }, 50);
+            }
 
-    window.sfClosePopup = function() {
-        popup.style.transform = 'translateY(-50%) translateX(-110%)';
-        setTimeout(function() {
-            popup.style.display = 'none';
-            tab.style.display   = 'block';
-        }, 400);
-        try { sessionStorage.setItem(STORAGE_KEY, Date.now()); } catch(e) {}
-    };
+            window.sfClosePopup = function() {
+                popup.style.transform = 'translateY(-50%) translateX(-110%)';
+                setTimeout(function() {
+                    popup.style.display = 'none';
+                    tab.style.display = 'block';
+                }, 400);
+                try {
+                    sessionStorage.setItem(STORAGE_KEY, Date.now());
+                } catch (e) {}
+            };
 
-    window.sfOpenPopup = function() {
-        popup.style.display = 'block';
-        popup.style.transform = 'translateY(-50%) translateX(-110%)';
-        tab.style.display   = 'none';
-        setTimeout(function() {
-            popup.style.transform = 'translateY(-50%) translateX(0)';
-        }, 50);
-        try { sessionStorage.removeItem(STORAGE_KEY); } catch(e) {}
-    };
+            window.sfOpenPopup = function() {
+                popup.style.display = 'block';
+                popup.style.transform = 'translateY(-50%) translateX(-110%)';
+                tab.style.display = 'none';
+                setTimeout(function() {
+                    popup.style.transform = 'translateY(-50%) translateX(0)';
+                }, 50);
+                try {
+                    sessionStorage.removeItem(STORAGE_KEY);
+                } catch (e) {}
+            };
 
-    // Decide whether to show
-    var closedAt = null;
-    try { closedAt = sessionStorage.getItem(STORAGE_KEY); } catch(e) {}
+            // Decide whether to show
+            var closedAt = null;
+            try {
+                closedAt = sessionStorage.getItem(STORAGE_KEY);
+            } catch (e) {}
 
-    var shouldShow = true;
-    if (closedAt) {
-        var elapsed = (Date.now() - parseInt(closedAt)) / 1000;
-        if (elapsed < RESHOW_AFTER) { shouldShow = false; }
-    }
+            var shouldShow = true;
+            if (closedAt) {
+                var elapsed = (Date.now() - parseInt(closedAt)) / 1000;
+                if (elapsed < RESHOW_AFTER) {
+                    shouldShow = false;
+                }
+            }
 
-    if (shouldShow) {
-        // Start hidden off-screen, slide in after delay
-        popup.style.display   = 'block';
-        popup.style.transform = 'translateY(-50%) translateX(-110%)';
-        setTimeout(function() {
-            popup.style.transform = 'translateY(-50%) translateX(0)';
-        }, SHOW_DELAY);
-    } else {
-        tab.style.display = 'block';
-    }
-})();
-</script>
+            if (shouldShow) {
+                // Start hidden off-screen, slide in after delay
+                popup.style.display = 'block';
+                popup.style.transform = 'translateY(-50%) translateX(-110%)';
+                setTimeout(function() {
+                    popup.style.transform = 'translateY(-50%) translateX(0)';
+                }, SHOW_DELAY);
+            } else {
+                tab.style.display = 'block';
+            }
+        })();
+    </script>
 </body>
+
 </html>
